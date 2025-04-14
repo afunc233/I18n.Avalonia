@@ -63,7 +63,7 @@ public class I18nExtensionTest
         TestHelper.Excute(() =>
         {
             var testAxaml = """
-                            <TextBlock Name='textBlock' DockPanel.Dock="Top">
+                            <TextBlock Name='textBlock'>
                                 <TextBlock.Text>
                                     <i18n:I18n Key="{x:Static sample:LangKeys.Current_language_is}">
                                         <i18n:I18n.Args>
@@ -104,7 +104,7 @@ public class I18nExtensionTest
         TestHelper.Excute(() =>
         {
             var testAxaml = """
-                            <TextBlock Name='textBlock' DockPanel.Dock="Top">
+                            <TextBlock Name='textBlock'>
                                 <TextBlock.Text>
                                     <i18n:I18n Key="{x:Static sample:LangKeys.Addition_formula_2}">
                                         <i18n:I18n.Args>
@@ -146,7 +146,7 @@ public class I18nExtensionTest
         TestHelper.Excute(() =>
         {
             var testAxaml = """
-                            <TextBlock x:Name="textBlock" Text="{Binding Language.Value^}" DockPanel.Dock="Top" />
+                            <TextBlock x:Name="textBlock" Text="{Binding Language.Value^}" />
                             """;
 
             var xaml = TestHelper.AxamlFormat.Replace(TestHelper.TestAxamlPlaceholder, testAxaml);

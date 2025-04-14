@@ -14,8 +14,8 @@ public class I18nAttachedTest
         TestHelper.Excute(() =>
         {
             const string testAxaml = """
-                                     <TextBlock Name='textBlock' DockPanel.Dock="Top"
-                                                 i18n:I18nAttached.Key="{Binding Current_language_is}"
+                                     <TextBlock Name='textBlock'
+                                                i18n:I18nAttached.Key="{Binding Current_language_is}"
                                                 i18n:I18nAttached.Args="{Binding Args}"
                                                 i18n:I18nAttached.TextProperty="{x:Static TextBlock.TextProperty}">
                                      </TextBlock>
@@ -49,9 +49,9 @@ public class I18nAttachedTest
         TestHelper.Excute(() =>
         {
             const string testAxaml = """
-                                     <TextBlock Name='textBlock' DockPanel.Dock="Top"
-                                                 i18n:I18nAttached.Key="{Binding Addition_formula_2}"
-                                                 i18n:I18nAttached.Args="{Binding (i18n:I18nAttached.Args),RelativeSource={RelativeSource Mode=Self}}"
+                                     <TextBlock Name='textBlock'
+                                                i18n:I18nAttached.Key="{Binding Addition_formula_2}"
+                                                i18n:I18nAttached.Args="{Binding (i18n:I18nAttached.Args),RelativeSource={RelativeSource Mode=Self}}"
                                                 i18n:I18nAttached.TextProperty="{x:Static TextBlock.TextProperty}">
                                          <i18n:I18nAttached.Args>
                                              <sys:Int32>1</sys:Int32>

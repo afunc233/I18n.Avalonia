@@ -1,32 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <IsRoslynComponent>true</IsRoslynComponent>
+    <RootNamespace>I18n.Avalonia.Generator</RootNamespace>
+    <PackageId>I18n.Avaloniα.Generator</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>I18n.Avalonia.Generator</Title>
+    <Authors>afunc</Authors>
+    <Description>Provides way to I18N for Avalonia</Description>
+    <PackageProjectUrl>https://github.com/afunc233/I18n.Avalonia</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/afunc233/I18n.Avalonia.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>I18N SourceGenerator avalonia avaloniaui c-sharp-library</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>licence.md</PackageLicenseFile>
+    <Version>1.0.0</Version>
+    <PackageReleaseNotes>
+      - First Release
+    </PackageReleaseNotes>
+  </PropertyGroup>
 
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <IsPackable>false</IsPackable>
-        <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
+  <ItemGroup>
+    <ProjectReference Include="..\I18n.Avalonia\I18n.Avalonia.csproj"/>
+  </ItemGroup>
 
-        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-        <IsRoslynComponent>true</IsRoslynComponent>
-
-
-        <RootNamespace>I18n.Avalonia.Generator</RootNamespace>
-        <PackageId>I18n.Avalonia.Generator</PackageId>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\I18n.Avalonia\I18n.Avalonia.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
-    </ItemGroup>
-    
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+    <None Include="../../licence.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+  
 </Project>

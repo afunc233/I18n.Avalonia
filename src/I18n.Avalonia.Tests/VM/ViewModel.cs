@@ -19,7 +19,7 @@ public partial class ViewModelItem : ViewModelBase
     public IEnumerable<object> Args => [Value1, Value2];
 }
 
-public partial class ViewModel : ViewModelBase
+public class ViewModel : ViewModelBase
 {
     public List<ViewModelItem> Items { get; } = new List<ViewModelItem>();
 
