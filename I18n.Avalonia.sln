@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "I18n.Avalonia.Generator", "src\I18n.Avalonia.Generator\I18n.Avalonia.Generator.csproj", "{4224964D-6E35-44FA-9C2D-7BEE67B5AD7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "I18n.Avalonia", "src\I18n.Avalonia\I18n.Avalonia.csproj", "{981792F9-77AC-4C7E-87A4-500DBE0D36EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "I18n.Avalonia.Sample", "src\I18n.Avalonia.Sample\I18n.Avalonia.Sample.csproj", "{E779E8B6-4407-4E43-84F0-25D062608236}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "I18n.Avalonia.Tests", "src\I18n.Avalonia.Tests\I18n.Avalonia.Tests.csproj", "{0D4F8B7C-2D2F-4226-8523-9A9926DCCFFD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F382A2B1-3EA7-451F-B531-E75E1CE5CBC9}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Readme.md = Readme.md
+		I18n.Avalonia.sln.DotSettings = I18n.Avalonia.sln.DotSettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4224964D-6E35-44FA-9C2D-7BEE67B5AD7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4224964D-6E35-44FA-9C2D-7BEE67B5AD7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4224964D-6E35-44FA-9C2D-7BEE67B5AD7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4224964D-6E35-44FA-9C2D-7BEE67B5AD7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{981792F9-77AC-4C7E-87A4-500DBE0D36EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{981792F9-77AC-4C7E-87A4-500DBE0D36EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{981792F9-77AC-4C7E-87A4-500DBE0D36EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{981792F9-77AC-4C7E-87A4-500DBE0D36EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E779E8B6-4407-4E43-84F0-25D062608236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E779E8B6-4407-4E43-84F0-25D062608236}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E779E8B6-4407-4E43-84F0-25D062608236}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E779E8B6-4407-4E43-84F0-25D062608236}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D4F8B7C-2D2F-4226-8523-9A9926DCCFFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D4F8B7C-2D2F-4226-8523-9A9926DCCFFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D4F8B7C-2D2F-4226-8523-9A9926DCCFFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D4F8B7C-2D2F-4226-8523-9A9926DCCFFD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
