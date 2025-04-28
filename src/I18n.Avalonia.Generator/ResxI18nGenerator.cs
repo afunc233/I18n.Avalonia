@@ -7,7 +7,7 @@ namespace I18n.Avalonia.Generator;
 /// 
 /// </summary>
 [Generator(LanguageNames.CSharp)]
-internal class ResxKeysGenerator : AttributeDetectBaseGenerator
+internal class ResxI18nGenerator : AttributeDetectBaseGenerator
 {
     #region 固定量
 
@@ -21,13 +21,13 @@ internal class ResxKeysGenerator : AttributeDetectBaseGenerator
 
 
     private static readonly string ResxKeysOfAttributeSource =
-        $"""
+         $"""
          using System;
 
          namespace {Const.AttributeNamespace};
          #pragma warning disable CS9113
          [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-         public class {Const.ResxKeysOfAttribute}(Type resourceType) : Attribute;
+         public class {Const.ResxI18nOfAttribute}(Type resourceType) : Attribute;
          #pragma warning restore CS9113
          """;
 
@@ -47,11 +47,12 @@ internal class ResxKeysGenerator : AttributeDetectBaseGenerator
             #nullable enable
             class $TranslatorProviderName$ : I18n.Avalonia.ITranslatorProvider
             {
+                private readonly Dictionary<string, Func<string?>> _translationProviders = new();
+                
                 internal $TranslatorProviderName$()
                 {
                     I18n.Avalonia.I18nProvider.Add(this);
                 }
-                private readonly Dictionary<string, Func<string?>> _translationProviders = new();
                 
                 void ITranslatorProvider.AddOrUpdate(string key, Func<string?> value)
                 {
@@ -62,6 +63,7 @@ internal class ResxKeysGenerator : AttributeDetectBaseGenerator
                 {
                     $ResxTypeName$.Culture = culture;
                 }
+                
                 string? ITranslatorProvider.GetString(string key)
                 {
                     if (_translationProviders.TryGetValue(key, out var valueFunc))
@@ -93,7 +95,7 @@ internal class ResxKeysGenerator : AttributeDetectBaseGenerator
 
         context.RegisterPostInitializationOutput(ctx =>
         {
-            ctx.AddSource($"{Const.ResxKeysOfAttribute}.g.cs", ResxKeysOfAttributeSource);
+            ctx.AddSource($"{Const.ResxI18nOfAttribute}.g.cs", ResxKeysOfAttributeSource);
         });
     }
 
@@ -118,15 +120,17 @@ internal class ResxKeysGenerator : AttributeDetectBaseGenerator
         var translatorProviderName = $"{targetSymbol.Name}TranslatorProvider";
 
         var addOrUpdate = string.Join("\n",
-            memberNames.Select(x => $"_translator.AddOrUpdate(\"{x}\",() => {targetFullName}.{x});"));
+            memberNames.Select(x => $"\t\t_translator.AddOrUpdate(\"{x}\",() => {targetFullName}.{x});"));
 
         // ReSharper disable once InconsistentNaming
-        var i18nUnit = string.Join("\n", memberNames.Select(x => $"""
-                                                                  /// <summary>
-                                                                  /// find string like {x}
-                                                                  /// </summary>
-                                                                  public static {Const.RootNamespace}.I18nUnit {x} => new {Const.RootNamespace}.I18nUnit(_translator, nameof({x}));
-                                                                  """));
+        var i18nUnit = string.Join("\n",
+            memberNames.Select(x => 
+         $"""
+             /// <summary>
+             /// find string like {x}
+             /// </summary>
+             public static {Const.RootNamespace}.I18nUnit {x} => new {Const.RootNamespace}.I18nUnit(_translator, nameof({x}));
+         """));
         context.AddSource(
             $"{generateCtx.TargetSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).Replace("global::", "")}.g.cs",
             Format.Replace("$TranslatorProviderName$", translatorProviderName)

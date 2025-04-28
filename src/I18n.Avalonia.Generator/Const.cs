@@ -6,8 +6,8 @@ internal static class Const
     
     internal static string AttributeNamespace => $"{RootNamespace}.Attributes";
     
-    internal static string ResxKeysOfAttribute => nameof(ResxKeysOfAttribute);
+    internal static string ResxI18nOfAttribute => nameof(ResxI18nOfAttribute);
 
-    internal static string ResxKeysOfAttributeFullName => $"{AttributeNamespace}.{nameof(ResxKeysOfAttribute)}";
+    internal static string ResxKeysOfAttributeFullName => $"{AttributeNamespace}.{nameof(ResxI18nOfAttribute)}";
     
 }
