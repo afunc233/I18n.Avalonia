@@ -1,7 +1,28 @@
 ﻿<Project>
-	<PropertyGroup>
+  <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-	</PropertyGroup>
+  </PropertyGroup>
 
+  <PropertyGroup>
+    <Authors>afunc</Authors>
+    <Description>Provides way to I18N for Avalonia</Description>
+    <PackageProjectUrl>https://github.com/afunc233/I18n.Avalonia</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/afunc233/I18n.Avalonia.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>I18N SourceGenerator avalonia avaloniaui c-sharp-library</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>licence.md</PackageLicenseFile>
+    <Version>1.0.1</Version>
+    <PackageReleaseNotes>
+      - First Release
+    </PackageReleaseNotes>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+    <None Include="../../README.en.md" Pack="true" PackagePath="/" />
+    <None Include="../../licence.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+  
 </Project>
