@@ -5,7 +5,6 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <RootNamespace>I18n.Avalonia</RootNamespace>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>I18n.Avaloniα</PackageId>
     <Title>$(PackageId)</Title>
   </PropertyGroup>

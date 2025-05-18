@@ -77,7 +77,6 @@ internal class ResxKeysGenerator : AttributeDetectBaseGenerator
             {
         $AddOrUpdate$
             }
-
         $I18nUnit$
         }
 
@@ -118,15 +117,17 @@ internal class ResxKeysGenerator : AttributeDetectBaseGenerator
         var translatorProviderName = $"{targetSymbol.Name}TranslatorProvider";
 
         var addOrUpdate = string.Join("\n",
-            memberNames.Select(x => $"_translator.AddOrUpdate(\"{x}\",() => {targetFullName}.{x});"));
+            memberNames.Select(x => $"\t\t_translator.AddOrUpdate(\"{x}\",() => {targetFullName}.{x});"));
 
         // ReSharper disable once InconsistentNaming
-        var i18nUnit = string.Join("\n", memberNames.Select(x => $"""
-                                                                  /// <summary>
-                                                                  /// find string like {x}
-                                                                  /// </summary>
-                                                                  public static {Const.RootNamespace}.I18nUnit {x} => new {Const.RootNamespace}.I18nUnit(_translator, nameof({x}));
-                                                                  """));
+        var i18nUnit = string.Join("\n", memberNames.Select(x => 
+             $"""
+                  
+                  /// <summary>
+                  /// find string like {x}
+                  /// </summary>
+                  public static {Const.RootNamespace}.I18nUnit {x} => new {Const.RootNamespace}.I18nUnit(_translator, nameof({x}));
+              """));
         context.AddSource(
             $"{generateCtx.TargetSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).Replace("global::", "")}.g.cs",
             Format.Replace("$TranslatorProviderName$", translatorProviderName)

@@ -1,43 +1,44 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <Nullable>enable</Nullable>
-        <RootNamespace>I18n.Avalonia.Sample</RootNamespace>
-    </PropertyGroup>
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <RootNamespace>I18n.Avalonia.Sample</RootNamespace>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\I18n.Avalonia.Generator\I18n.Avalonia.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\I18n.Avalonia\I18n.Avalonia.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\I18n.Avalonia.Generator\I18n.Avalonia.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+    <ProjectReference Include="..\I18n.Avalonia\I18n.Avalonia.csproj"/>
+  </ItemGroup>
 
-    <ItemGroup>
-      <Compile Update="Properties\Resources.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Resources.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Properties\ResourcesAbc.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>ResourcesAbc.resx</DependentUpon>
-      </Compile>
-    </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\ResourcesAbc.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourcesAbc.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
 
-    <ItemGroup>
-      <EmbeddedResource Update="Properties\Resources.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Properties\ResourcesAbc.resx">
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\ResourcesAbc.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ResourcesAbc.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-      <EmbeddedResource Update="Properties\Resources.fr.resx">
-        <DependentUpon>Resources.resx</DependentUpon>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Properties\Resources.zh.resx">
-        <DependentUpon>Resources.resx</DependentUpon>
-      </EmbeddedResource>
-    </ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.fr.resx">
+      <DependentUpon>Resources.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.zh.resx">
+      <DependentUpon>Resources.resx</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
 
 </Project>
