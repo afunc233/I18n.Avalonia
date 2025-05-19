@@ -79,7 +79,6 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
             {
         $AddOrUpdate$
             }
-
         $I18nUnit$
         }
 

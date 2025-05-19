@@ -6,29 +6,11 @@
     <LangVersion>latest</LangVersion>
     <RootNamespace>I18n.Avalonia</RootNamespace>
     <PackageId>I18n.Avaloniα</PackageId>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Title>I18n.Avalonia</Title>
-    <Authors>afunc</Authors>
-    <Description>Provides way to I18N for Avalonia</Description>
-    <PackageProjectUrl>https://github.com/afunc233/I18n.Avalonia</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/afunc233/I18n.Avalonia.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>I18N avalonia avaloniaui c-sharp-library</PackageTags>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageLicenseFile>licence.md</PackageLicenseFile>
-    <Version>1.0.0</Version>
-    <PackageReleaseNotes>
-      - First Release
-    </PackageReleaseNotes>
+    <Title>$(PackageId)</Title>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.0" PrivateAssets="ALL"/>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="../../README.md" Pack="true" PackagePath="/" />
-    <None Include="../../licence.md" Pack="true" PackagePath="/" />
   </ItemGroup>
   
 </Project>
