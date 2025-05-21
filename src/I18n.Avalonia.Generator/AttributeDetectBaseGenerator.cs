@@ -25,9 +25,8 @@ internal abstract class AttributeDetectBaseGenerator : IIncrementalGenerator
 
     protected virtual void OnInitialize(IncrementalGeneratorInitializationContext context)
     {
-        
     }
-    
+
     protected virtual bool IsPartialClass(SyntaxNode node, CancellationToken token)
     {
         return node is ClassDeclarationSyntax { Parent: not ClassDeclarationSyntax } classDeclarationSyntax
@@ -53,9 +52,9 @@ internal abstract class AttributeDetectBaseGenerator : IIncrementalGenerator
         }
 
         var argumentSyntax = attribute.ArgumentList?.Arguments.FirstOrDefault();
-        return argumentSyntax is not { Expression: TypeOfExpressionSyntax typeOfExp }
-            ? new AttributeContextAndType(context, null)
-            : new AttributeContextAndType(context, typeOfExp.Type);
+        return argumentSyntax is not { Expression: TypeOfExpressionSyntax typeOfExp } ?
+            new AttributeContextAndType(context, null) :
+            new AttributeContextAndType(context, typeOfExp.Type);
     }
 
     protected abstract void GenerateCode(SourceProductionContext context,

@@ -5,7 +5,7 @@ using Avalonia;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 
-namespace I18n.Avalonia;
+namespace I18n.Avalonia.Primitives;
 
 internal static class I18nUnitExtension
 {

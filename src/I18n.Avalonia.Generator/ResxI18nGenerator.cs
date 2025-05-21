@@ -21,7 +21,7 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
 
 
     private static readonly string ResxKeysOfAttributeSource =
-         $"""
+        $"""
          using System;
 
          namespace {Const.AttributeNamespace};
@@ -51,7 +51,7 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
                 
                 internal $TranslatorProviderName$()
                 {
-                    I18n.Avalonia.I18nProvider.Add(this);
+                    I18n.Avalonia.I18nProvider.Instance.Add(this);
                 }
                 
                 void ITranslatorProvider.AddOrUpdate(string key, Func<string?> value)
@@ -123,13 +123,14 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
 
         // ReSharper disable once InconsistentNaming
         var i18nUnit = string.Join("\n",
-            memberNames.Select(x => 
-         $"""
-             /// <summary>
-             /// find string like {x}
-             /// </summary>
-             public static {Const.RootNamespace}.I18nUnit {x} => new {Const.RootNamespace}.I18nUnit(_translator, nameof({x}));
-         """));
+            memberNames.Select(x =>
+                $"""
+                 
+                     /// <summary>
+                     /// find string like {x}
+                     /// </summary>
+                     public static {Const.RootNamespace}.I18nUnit {x} => new {Const.RootNamespace}.I18nUnit(_translator, nameof({x}));
+                 """));
         context.AddSource(
             $"{generateCtx.TargetSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).Replace("global::", "")}.g.cs",
             Format.Replace("$TranslatorProviderName$", translatorProviderName)

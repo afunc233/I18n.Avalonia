@@ -13,17 +13,17 @@ public class I18nExtensionTest
     {
         TestHelper.Excute(() =>
         {
-            I18nProvider.SetCulture(TestHelper.zh);
+            I18nProvider.Instance.SetCulture(TestHelper.zh);
 
             var i18n = new I18nExtension() { Key = LangKeys.Chinese };
 
             Assert.True(string.Equals("中文", i18n.Key.CurrentValue));
 
-            I18nProvider.SetCulture(TestHelper.en);
+            I18nProvider.Instance.SetCulture(TestHelper.en);
 
             Assert.True(string.Equals("Chinese", i18n.Key.CurrentValue));
 
-            I18nProvider.SetCulture(TestHelper.fr);
+            I18nProvider.Instance.SetCulture(TestHelper.fr);
 
             Assert.True(string.Equals("Chinois", i18n.Key.CurrentValue));
         });
@@ -44,14 +44,14 @@ public class I18nExtensionTest
             var textBlock = userControl.FindControl<TextBlock>("textBlock");
 
             Assert.NotNull(textBlock);
-            I18nProvider.SetCulture(TestHelper.zh);
+            I18nProvider.Instance.SetCulture(TestHelper.zh);
             Assert.True(string.Equals("中文", textBlock.Text));
 
-            I18nProvider.SetCulture(TestHelper.en);
+            I18nProvider.Instance.SetCulture(TestHelper.en);
 
             Assert.True(string.Equals("Chinese", textBlock.Text));
 
-            I18nProvider.SetCulture(TestHelper.fr);
+            I18nProvider.Instance.SetCulture(TestHelper.fr);
 
             Assert.True(string.Equals("Chinois", textBlock.Text));
         });
@@ -152,7 +152,7 @@ public class I18nExtensionTest
             var xaml = TestHelper.AxamlFormat.Replace(TestHelper.TestAxamlPlaceholder, testAxaml);
 
             var userControl = (UserControl)AvaloniaRuntimeXamlLoader.Load(xaml);
-            
+
             userControl.DataContext = TestHelper.VM;
 
             var textBlock = userControl.FindControl<TextBlock>("textBlock");

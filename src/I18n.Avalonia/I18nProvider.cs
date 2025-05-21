@@ -4,32 +4,33 @@ using System.Globalization;
 
 namespace I18n.Avalonia;
 
-public static class I18nProvider
+public class I18nProvider
 {
-    public static event EventHandler<CultureInfo>? OnCultureChanged;
+    public static I18nProvider Instance = new Lazy<I18nProvider>(() => new I18nProvider()).Value;
+    public event EventHandler<CultureInfo>? OnCultureChanged;
 
-    public static CultureInfo Culture { get; private set; }
+    public CultureInfo Culture { get; private set; }
 
-    static I18nProvider()
+    public readonly IList<ITranslatorProvider> TranslatorProviders = [];
+
+    private I18nProvider()
     {
         Culture = CultureInfo.CurrentUICulture;
     }
 
-    public static readonly IList<ITranslatorProvider> TranslatorProviders = [];
-    
-    
-    public static void Add(ITranslatorProvider provider)
+    public void Add(ITranslatorProvider provider)
     {
         TranslatorProviders.Add(provider);
     }
-    
-    public static void SetCulture(CultureInfo culture)
+
+    public void SetCulture(CultureInfo culture)
     {
         Culture = culture;
         foreach (var translatorProvider in TranslatorProviders)
         {
             translatorProvider.SetCulture(culture);
         }
+
         OnCultureChanged?.Invoke(null, Culture);
     }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using Avalonia.Data;
 using Avalonia.Markup.Xaml;
 using Avalonia.Metadata;
+using I18n.Avalonia.Primitives;
 
 namespace I18n.Avalonia;
 
