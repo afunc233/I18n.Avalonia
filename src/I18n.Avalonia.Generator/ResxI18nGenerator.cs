@@ -1,4 +1,5 @@
-﻿using I18n.Avalonia.Generator.Primitives;
+﻿using System.Globalization;
+using I18n.Avalonia.Generator.Primitives;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -104,23 +105,60 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
         AttributeContextAndArguments contextAndArguments)
     {
         var generateCtx = contextAndArguments.Context;
-        if (contextAndArguments.ArgumentSyntax?.FirstOrDefault()?.Expression is not TypeOfExpressionSyntax typeOfExpression)
+        if (contextAndArguments.ArgumentSyntax?.FirstOrDefault()?.Expression is not TypeOfExpressionSyntax
+            typeOfExpression)
         {
+            context.ReportDiagnostic(
+                Diagnostic.Create(
+                    DiagnosticDescriptor
+                    ("ResxI18n0001",
+                        DiagnosticSeverity.Error,
+                        true),
+                    contextAndArguments.ArgumentSyntax?.FirstOrDefault()?.Expression.GetLocation(),
+                    $"{AttributeName} type should not null "));
             return;
         }
 
         var targetSymbol = generateCtx.SemanticModel.GetSymbolInfo(typeOfExpression.Type).Symbol as INamedTypeSymbol;
-        var targetFullName = targetSymbol!.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        var targetFullName = targetSymbol!.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)
+            .Replace("global::", "");
 
         var nameSpace =
             generateCtx.TargetSymbol.ContainingNamespace.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)
                 .Replace("global::", "");
 
-        var memberNames = targetSymbol
-            .GetMembers()
-            .OfType<IPropertySymbol>()
-            .Select(x => x.Name)
-            .Except(Exceptions).ToList();
+        var propertySymbols = targetSymbol.GetMembers().OfType<IPropertySymbol>().ToList();
+
+        if (Exceptions.Any(it => propertySymbols.All(p => string.Equals(p.Name, it))))
+        {
+            context.ReportDiagnostic(
+                Diagnostic.Create(DiagnosticDescriptor("ResxI18n0002", DiagnosticSeverity.Error, true),
+                    contextAndArguments.ArgumentSyntax?.FirstOrDefault()?.Expression.GetLocation(),
+                    $"{targetFullName} is incorrect type. should has properties [{string.Join(", ", Exceptions)}]"));
+            return;
+        }
+
+        var culturePropertySymbol = propertySymbols.First(it => string.Equals(it.Name, Exceptions.Last()));
+
+        if (!culturePropertySymbol.IsStatic)
+        {
+            context.ReportDiagnostic(
+                Diagnostic.Create(DiagnosticDescriptor("ResxI18n0003", DiagnosticSeverity.Error, true),
+                    culturePropertySymbol.Locations.LastOrDefault(),
+                    $"{culturePropertySymbol.Name} should be static "));
+            return;
+        }
+
+        if (!string.Equals(culturePropertySymbol.Type.Name, nameof(CultureInfo)))
+        {
+            context.ReportDiagnostic(
+                Diagnostic.Create(DiagnosticDescriptor("ResxI18n0003", DiagnosticSeverity.Error, true),
+                    culturePropertySymbol.Locations.LastOrDefault(),
+                    $"type of {culturePropertySymbol.Name} should be {nameof(CultureInfo)}"));
+            return;
+        }
+
+        var memberNames = propertySymbols.Select(it => it.Name).Except(Exceptions).ToList();
 
         var translatorProviderName = $"{targetSymbol.Name}TranslatorProvider";
 
@@ -146,5 +184,16 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
                 .Replace("$AddOrUpdate$", addOrUpdate)
                 .Replace("$I18nUnit$", i18nUnit)
         );
+    }
+
+    private static DiagnosticDescriptor DiagnosticDescriptor(string id, DiagnosticSeverity defaultSeverity,
+        bool isEnabledByDefault)
+    {
+        return new DiagnosticDescriptor(id,
+            "SourceGenerator Error",
+            $"An error occurred in {nameof(ResxI18nGenerator)}: {{0}}",
+            "SourceGeneration",
+            defaultSeverity,
+            isEnabledByDefault);
     }
 }
