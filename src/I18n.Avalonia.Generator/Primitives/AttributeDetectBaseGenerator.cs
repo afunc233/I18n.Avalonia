@@ -2,23 +2,17 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace I18n.Avalonia.Generator;
+namespace I18n.Avalonia.Generator.Primitives;
 
 internal abstract class AttributeDetectBaseGenerator : IIncrementalGenerator
 {
-    protected class AttributeContextAndType(GeneratorAttributeSyntaxContext context, TypeSyntax? typeSyntax)
-    {
-        public GeneratorAttributeSyntaxContext Context { get; } = context;
-        public TypeSyntax? TypeSyntax { get; } = typeSyntax;
-    }
-
     protected abstract string AttributeName { get; }
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         OnInitialize(context);
         var info = context.SyntaxProvider.ForAttributeWithMetadataName(
-            AttributeName, IsPartialClass, Transform).Where(it => it.TypeSyntax is not null);
+            AttributeName, IsPartialClass, Transform).Where(it => it.ArgumentSyntax is not null);
 
         context.RegisterSourceOutput(info, GenerateCode);
     }
@@ -35,28 +29,21 @@ internal abstract class AttributeDetectBaseGenerator : IIncrementalGenerator
                && classDeclarationSyntax.Modifiers.Any(SyntaxKind.StaticKeyword);
     }
 
-    protected virtual AttributeContextAndType Transform(GeneratorAttributeSyntaxContext context,
+    protected virtual AttributeContextAndArguments Transform(GeneratorAttributeSyntaxContext context,
         CancellationToken token)
     {
-        var node = context.TargetNode as ClassDeclarationSyntax;
-
-        if (node is null)
+        if (context.TargetNode is not ClassDeclarationSyntax node)
         {
-            return new AttributeContextAndType(context, null);
+            return new AttributeContextAndArguments(context, null);
         }
 
         var attribute = node.GetSpecifiedAttribute(context.SemanticModel, AttributeName, token);
-        if (attribute is null)
-        {
-            return new AttributeContextAndType(context, null);
-        }
 
-        var argumentSyntax = attribute.ArgumentList?.Arguments.FirstOrDefault();
-        return argumentSyntax is not { Expression: TypeOfExpressionSyntax typeOfExp } ?
-            new AttributeContextAndType(context, null) :
-            new AttributeContextAndType(context, typeOfExp.Type);
+        return attribute is null ?
+            new AttributeContextAndArguments(context, null) :
+            new AttributeContextAndArguments(context, attribute.ArgumentList?.Arguments);
     }
 
     protected abstract void GenerateCode(SourceProductionContext context,
-        AttributeContextAndType attributeContextAndType);
+        AttributeContextAndArguments attributeContextAndArguments);
 }

@@ -1,5 +1,7 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using I18n.Avalonia.Generator.Primitives;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace I18n.Avalonia.Generator;
 
@@ -99,11 +101,15 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
     }
 
     protected override void GenerateCode(SourceProductionContext context,
-        AttributeContextAndType attributeContextAndType)
+        AttributeContextAndArguments contextAndArguments)
     {
-        var generateCtx = attributeContextAndType.Context;
-        var type = attributeContextAndType.TypeSyntax;
-        var targetSymbol = generateCtx.SemanticModel.GetSymbolInfo(type!).Symbol as INamedTypeSymbol;
+        var generateCtx = contextAndArguments.Context;
+        if (contextAndArguments.ArgumentSyntax?.FirstOrDefault()?.Expression is not TypeOfExpressionSyntax typeOfExpression)
+        {
+            return;
+        }
+
+        var targetSymbol = generateCtx.SemanticModel.GetSymbolInfo(typeOfExpression.Type).Symbol as INamedTypeSymbol;
         var targetFullName = targetSymbol!.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
 
         var nameSpace =
@@ -125,7 +131,7 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
         var i18nUnit = string.Join("\n",
             memberNames.Select(x =>
                 $"""
-                 
+
                      /// <summary>
                      /// find string like {x}
                      /// </summary>

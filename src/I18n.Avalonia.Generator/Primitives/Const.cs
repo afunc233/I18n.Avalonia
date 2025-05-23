@@ -1,4 +1,4 @@
-namespace I18n.Avalonia.Generator;
+namespace I18n.Avalonia.Generator.Primitives;
 
 internal static class Const
 {

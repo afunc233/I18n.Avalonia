@@ -1,7 +1,7 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace I18n.Avalonia.Generator;
+namespace I18n.Avalonia.Generator.Primitives;
 
 internal static class SyntaxNodeExtension
 {
