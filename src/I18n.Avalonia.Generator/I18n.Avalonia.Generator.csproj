@@ -7,7 +7,7 @@
     <LangVersion>latest</LangVersion>
     <EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
     <IsRoslynComponent>true</IsRoslynComponent>
-    <PackageId>I18n.Avaloniα.Generator</PackageId>
+    <PackageId>I18n.Avalonia.Generator</PackageId>
     <Title>$(PackageId)</Title>
   </PropertyGroup>
 
