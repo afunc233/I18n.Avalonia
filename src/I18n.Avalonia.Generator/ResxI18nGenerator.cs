@@ -169,11 +169,11 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
         var i18nUnit = string.Join("\n",
             memberNames.Select(x =>
                 $"""
-
+                     private static readonly I18n.Avalonia.I18nUnit _{x} = new I18n.Avalonia.I18nUnit(_translator, nameof({x}));
                      /// <summary>
                      /// find string like {x}
                      /// </summary>
-                     public static {Const.RootNamespace}.I18nUnit {x} => new {Const.RootNamespace}.I18nUnit(_translator, nameof({x}));
+                     public static {Const.RootNamespace}.I18nUnit {x} => _{x};
                  """));
         context.AddSource(
             $"{generateCtx.TargetSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).Replace("global::", "")}.g.cs",
