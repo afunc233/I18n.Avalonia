@@ -18,9 +18,9 @@ public class I18nProviderTest
             {
                 Assert.Equal(ci, info);
             };
-            I18nProvider.Instance.OnCultureChanged += handler;
-            I18nProvider.Instance.SetCulture(ci);
-            I18nProvider.Instance.OnCultureChanged -= handler;
+            I18nProvider.OnCultureChanged += handler;
+            I18nProvider.SetCulture(ci);
+            I18nProvider.OnCultureChanged -= handler;
         });
     }
 
@@ -32,14 +32,14 @@ public class I18nProviderTest
             var ci = new CultureInfo("fr");
 
             var o = Observable.FromEventPattern<CultureInfo>(
-                add => I18nProvider.Instance.OnCultureChanged += add,
-                rm => I18nProvider.Instance.OnCultureChanged -= rm
+                add => I18nProvider.OnCultureChanged += add,
+                rm => I18nProvider.OnCultureChanged -= rm
             ).Select(it => it.EventArgs).Subscribe(culture =>
             {
                 Assert.Equal(ci, culture);
             });
 
-            I18nProvider.Instance.SetCulture(ci);
+            I18nProvider.SetCulture(ci);
             o.Dispose();
         });
     }

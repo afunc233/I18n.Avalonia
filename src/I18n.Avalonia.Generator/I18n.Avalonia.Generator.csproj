@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
     <IsRoslynComponent>true</IsRoslynComponent>
     <PackageId>I18n.Avaloniα.Generator</PackageId>
     <Title>$(PackageId)</Title>
@@ -27,6 +27,12 @@
   <ItemGroup>
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
     <None Include="$(OutputPath)\I18n.Avalonia.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
+  </ItemGroup>
+<!--  <ItemGroup>-->
+<!--    <Compile Remove="XmlTranslatorProvider.cs" />-->
+<!--  </ItemGroup>-->
+  <ItemGroup>
+    <EmbeddedResource Include="Sources\XmlTranslatorProvider.cs" />
   </ItemGroup>
 
 </Project>

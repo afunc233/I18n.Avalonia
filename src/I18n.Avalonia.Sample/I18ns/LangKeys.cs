@@ -14,3 +14,10 @@ public static partial class LangKeys;
 /// </summary>
 [ResxI18nOf(typeof(ResourcesAbc))]
 public static partial class LangAbcKeys;
+
+// /// <summary>
+// /// also support multiple Resources
+// /// </summary>
+// [XmlI18nOf("xml//lang.xml", ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"])]
+// public static partial class LangXmlKeys;
+

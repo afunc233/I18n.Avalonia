@@ -9,4 +9,8 @@ internal static class Const
     internal static string ResxI18nOfAttribute => nameof(ResxI18nOfAttribute);
 
     internal static string ResxKeysOfAttributeFullName => $"{AttributeNamespace}.{nameof(ResxI18nOfAttribute)}";
+    
+    internal static string XmlI18nOfAttribute => nameof(XmlI18nOfAttribute);
+    
+    internal static string XmlKeysOfAttributeFullName => $"{AttributeNamespace}.{nameof(XmlI18nOfAttribute)}";
 }

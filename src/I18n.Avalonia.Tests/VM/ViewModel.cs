@@ -33,11 +33,11 @@ public class ViewModel : ViewModelBase
 
     public CultureInfo Culture
     {
-        get => I18nProvider.Instance.Culture;
+        get => I18nProvider.Culture;
         set
         {
-            if (I18nProvider.Instance.Culture.EnglishName.Equals(value.EnglishName)) return;
-            I18nProvider.Instance.SetCulture(value);
+            if (I18nProvider.Culture.EnglishName.Equals(value.EnglishName)) return;
+            I18nProvider.SetCulture(value);
             this.RaisePropertyChanged();
         }
     }

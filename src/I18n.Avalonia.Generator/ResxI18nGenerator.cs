@@ -52,9 +52,11 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
             {
                 private readonly Dictionary<string, Func<string?>> _translationProviders = new();
                 
+                public List<I18nUnit> I18nUnits { get; } = [];
+                
                 internal $TranslatorProviderName$()
                 {
-                    I18n.Avalonia.I18nProvider.Instance.Add(this);
+                    I18n.Avalonia.I18nProvider.Add(this);
                 }
                 
                 void ITranslatorProvider.AddOrUpdate(string key, Func<string?> value)
@@ -65,6 +67,11 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
                 void ITranslatorProvider.SetCulture(CultureInfo culture)
                 {
                     $ResxTypeName$.Culture = culture;
+                    
+                    foreach(I18nUnit i18nUnit in I18nUnits)
+                    {
+                        i18nUnit.Refresh();
+                    }
                 }
                 
                 string? ITranslatorProvider.GetString(string key)
@@ -81,6 +88,8 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
             static $ClassName$()
             {
         $AddOrUpdate$
+        
+        $I18nAddOrUpdate$
             }
         $I18nUnit$
         }
@@ -165,10 +174,14 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
         var addOrUpdate = string.Join("\n",
             memberNames.Select(x => $"\t\t_translator.AddOrUpdate(\"{x}\",() => {targetFullName}.{x});"));
 
+        var i18nAddOrUpdate = string.Join("\n",
+            memberNames.Select(x => $"\t\t_translator.I18nUnits.Add({x});"));
+        
         // ReSharper disable once InconsistentNaming
         var i18nUnit = string.Join("\n",
             memberNames.Select(x =>
                 $"""
+                 
                      private static readonly I18n.Avalonia.I18nUnit _{x} = new I18n.Avalonia.I18nUnit(_translator, nameof({x}));
                      /// <summary>
                      /// find string like {x}
@@ -182,6 +195,7 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
                 .Replace("$NameSpace$", nameSpace)
                 .Replace("$ClassName$", generateCtx.TargetSymbol.Name)
                 .Replace("$AddOrUpdate$", addOrUpdate)
+                .Replace("$I18nAddOrUpdate$", i18nAddOrUpdate)
                 .Replace("$I18nUnit$", i18nUnit)
         );
     }

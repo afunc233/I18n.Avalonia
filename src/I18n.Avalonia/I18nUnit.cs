@@ -11,16 +11,24 @@ public class I18nUnit
 
     public IObservable<string?> Value => _value;
 
+    private readonly ITranslatorProvider _translatorProvider;
+    private readonly string _key;
     public I18nUnit(ITranslatorProvider translatorProvider, string key)
     {
+        _translatorProvider = translatorProvider;
+        _key = key;
+        
         _value = new Observable<string?>(Next());
-
-        I18nProvider.Instance.OnCultureChanged += (_, _) => { _value.OnNext(Next()); };
-        return;
-
-        string? Next()
-        {
-            return translatorProvider.GetString(key);
-        }
+    }
+    
+    private string? Next()
+    {
+        return _translatorProvider.GetString(_key);
+    }
+    
+    public void Refresh()
+    {
+        _value.OnNext(Next());
     }
 }
+
