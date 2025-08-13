@@ -15,7 +15,7 @@
     <PackageTags>I18N SourceGenerator avalonia avaloniaui c-sharp-library</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>licence.md</PackageLicenseFile>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <PackageReleaseNotes>
       - First Release
     </PackageReleaseNotes>
