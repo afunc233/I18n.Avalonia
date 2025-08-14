@@ -10,7 +10,7 @@ namespace I18n.Avalonia.Generator;
 /// 
 /// </summary>
 [Generator(LanguageNames.CSharp)]
-internal class ResxI18nGenerator : AttributeDetectBaseGenerator
+internal class ResxI18nGenerator : AbsAttributeDetectGenerator
 {
     #region 固定量
 
@@ -45,7 +45,7 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
 
         partial class $ClassName$
         {
-            private static readonly I18n.Avalonia.ITranslatorProvider _translator = new $TranslatorProviderName$();
+            private static readonly $TranslatorProviderName$ _translator = new $TranslatorProviderName$();
             
             #nullable enable
             class $TranslatorProviderName$ : I18n.Avalonia.ITranslatorProvider
@@ -59,12 +59,12 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
                     I18n.Avalonia.I18nProvider.Add(this);
                 }
                 
-                void ITranslatorProvider.AddOrUpdate(string key, Func<string?> value)
+                public void AddOrUpdate(string key, Func<string?> value)
                 {
                     _translationProviders[key] = value;
                 }
                 
-                void ITranslatorProvider.SetCulture(CultureInfo culture)
+                public void SetCulture(CultureInfo culture)
                 {
                     $ResxTypeName$.Culture = culture;
                     
@@ -90,6 +90,8 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
         $AddOrUpdate$
         
         $I18nAddOrUpdate$
+        
+                _translator.SetCulture(I18n.Avalonia.I18nProvider.Culture);
             }
         $I18nUnit$
         }
@@ -98,11 +100,11 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
 
     #endregion
 
-    protected override string AttributeName => Attribute;
+    public override string AttributeName => Attribute;
 
-    protected override void OnInitialize(IncrementalGeneratorInitializationContext context)
+    public override void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        base.OnInitialize(context);
+        base.Initialize(context);
 
         context.RegisterPostInitializationOutput(ctx =>
         {
@@ -111,7 +113,7 @@ internal class ResxI18nGenerator : AttributeDetectBaseGenerator
     }
 
     protected override void GenerateCode(SourceProductionContext context,
-        AttributeContextAndArguments contextAndArguments)
+        AttributeContextAndArgumentSyntax contextAndArguments)
     {
         var generateCtx = contextAndArguments.Context;
         if (contextAndArguments.ArgumentSyntax?.FirstOrDefault()?.Expression is not TypeOfExpressionSyntax

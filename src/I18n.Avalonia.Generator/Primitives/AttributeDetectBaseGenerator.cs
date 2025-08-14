@@ -1,49 +1,105 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Collections.Immutable;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace I18n.Avalonia.Generator.Primitives;
 
-internal abstract class AttributeDetectBaseGenerator : IIncrementalGenerator
+public interface IAttributeDetectGenerator : IIncrementalGenerator
 {
-    protected abstract string AttributeName { get; }
+    string AttributeName { get; }
+}
 
-    public void Initialize(IncrementalGeneratorInitializationContext context)
+public interface IAttributeDetectGenerator<T> : IAttributeDetectGenerator
+{
+    T Transform(GeneratorAttributeSyntaxContext context,
+        CancellationToken token);
+}
+
+public interface IAttributeDetectGenerator<T, OtherT> : IAttributeDetectGenerator<T>
+{
+}
+
+internal static class GeneratorAttributeSyntaxContextExtensions
+{
+    internal static AttributeContextAndArgumentSyntax ToAttributeContextAndArgumentSyntax(
+        this GeneratorAttributeSyntaxContext context, string attributeName, CancellationToken token)
     {
-        OnInitialize(context);
-        var info = context.SyntaxProvider.ForAttributeWithMetadataName(
-            AttributeName, IsPartialClass, Transform).Where(it => it.ArgumentSyntax is not null);
+        if (context.TargetNode is not ClassDeclarationSyntax node)
+        {
+            return new AttributeContextAndArgumentSyntax(context, null);
+        }
 
-        context.RegisterSourceOutput(info, GenerateCode);
+        var attribute = node.GetSpecifiedAttribute(context.SemanticModel, attributeName, token);
+
+        return new AttributeContextAndArgumentSyntax(context, attribute?.ArgumentList?.Arguments);
     }
+}
 
-    protected virtual void OnInitialize(IncrementalGeneratorInitializationContext context)
-    {
-    }
-
-    protected virtual bool IsPartialClass(SyntaxNode node, CancellationToken token)
+internal static class SyntaxNodeExtensions
+{
+    internal static bool IsPartialClass(this SyntaxNode node)
     {
         return node is ClassDeclarationSyntax { Parent: not ClassDeclarationSyntax } classDeclarationSyntax
                && classDeclarationSyntax.Modifiers.Any(SyntaxKind.PartialKeyword)
                && classDeclarationSyntax.Modifiers.Any(SyntaxKind.PublicKeyword)
                && classDeclarationSyntax.Modifiers.Any(SyntaxKind.StaticKeyword);
     }
+}
 
-    protected virtual AttributeContextAndArguments Transform(GeneratorAttributeSyntaxContext context,
-        CancellationToken token)
+internal abstract class AbsAttributeDetectGenerator : IAttributeDetectGenerator<AttributeContextAndArgumentSyntax>
+{
+    public abstract string AttributeName { get; }
+
+    public AttributeContextAndArgumentSyntax Transform(GeneratorAttributeSyntaxContext context, CancellationToken token)
     {
-        if (context.TargetNode is not ClassDeclarationSyntax node)
-        {
-            return new AttributeContextAndArguments(context, null);
-        }
+        return context.ToAttributeContextAndArgumentSyntax(AttributeName, token);
+    }
 
-        var attribute = node.GetSpecifiedAttribute(context.SemanticModel, AttributeName, token);
+    public virtual void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        var info = context.SyntaxProvider.ForAttributeWithMetadataName(
+            AttributeName, IsPartialClass, Transform);
 
-        return attribute is null ?
-            new AttributeContextAndArguments(context, null) :
-            new AttributeContextAndArguments(context, attribute.ArgumentList?.Arguments);
+        context.RegisterSourceOutput(info, GenerateCode);
+    }
+
+    protected virtual bool IsPartialClass(SyntaxNode node, CancellationToken token)
+    {
+        return node.IsPartialClass();
     }
 
     protected abstract void GenerateCode(SourceProductionContext context,
-        AttributeContextAndArguments attributeContextAndArguments);
+        AttributeContextAndArgumentSyntax attributeContextAndType);
+}
+
+internal abstract class AbsAttributeDetectGenerator<T> : IAttributeDetectGenerator<AttributeContextAndArgumentSyntax, T>
+{
+    public abstract string AttributeName { get; }
+    
+    public AttributeContextAndArgumentSyntax Transform(GeneratorAttributeSyntaxContext context, CancellationToken token)
+    {
+        return context.ToAttributeContextAndArgumentSyntax(AttributeName, token);
+    }
+    
+    protected virtual bool IsPartialClass(SyntaxNode node, CancellationToken token)
+    {
+        return node.IsPartialClass();
+    }
+
+    public virtual void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        var provider = context.SyntaxProvider.ForAttributeWithMetadataName(
+            AttributeName, IsPartialClass, Transform);
+
+        context.RegisterSourceOutput(ConvertProvider(context,provider), GenerateCode);
+    }
+
+    internal abstract IncrementalValuesProvider<(AttributeContextAndArgumentSyntax, T)> ConvertProvider(
+        IncrementalGeneratorInitializationContext context,
+        IncrementalValuesProvider<AttributeContextAndArgumentSyntax> provider);
+
+    protected abstract void GenerateCode(SourceProductionContext context,
+        (AttributeContextAndArgumentSyntax, T) attributeContextAndType);
 }

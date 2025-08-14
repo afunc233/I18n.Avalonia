@@ -10,7 +10,14 @@ internal static class Const
 
     internal static string ResxKeysOfAttributeFullName => $"{AttributeNamespace}.{nameof(ResxI18nOfAttribute)}";
     
-    internal static string XmlI18nOfAttribute => nameof(XmlI18nOfAttribute);
+    internal static string LocalXmlI18nOfAttribute => nameof(LocalXmlI18nOfAttribute);
     
-    internal static string XmlKeysOfAttributeFullName => $"{AttributeNamespace}.{nameof(XmlI18nOfAttribute)}";
+    internal static string LocalXmlKeysOfAttributeFullName => $"{AttributeNamespace}.{nameof(LocalXmlI18nOfAttribute)}";
+    
+    internal static string EmbeddedResourceXmlI18nOfAttribute => nameof(EmbeddedResourceXmlI18nOfAttribute);
+    
+    internal static string EmbeddedResourceXmlKeysOfAttributeFullName => $"{AttributeNamespace}.{nameof(EmbeddedResourceXmlI18nOfAttribute)}";
+    
+    internal static string IEmbeddedResourceXmlI18nParser => nameof(IEmbeddedResourceXmlI18nParser);
+
 }

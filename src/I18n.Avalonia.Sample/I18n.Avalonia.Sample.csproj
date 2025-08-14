@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\I18n.Avalonia.Generator\I18n.Avalonia.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
-    <ProjectReference Include="..\I18n.Avalonia\I18n.Avalonia.csproj"/>
+    <ProjectReference Include="..\I18n.Avalonia.Generator\I18n.Avalonia.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\I18n.Avalonia\I18n.Avalonia.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +39,14 @@
     <EmbeddedResource Update="Properties\Resources.zh.resx">
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
+    <None Remove="EmbeddedResourceXml\lang.xml" />
+    <AdditionalFiles Include="EmbeddedResourceXml\lang.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <None Remove="EmbeddedResourceXml\lang.fr.xml" />
+    <AdditionalFiles Include="EmbeddedResourceXml\lang.fr.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </AdditionalFiles>
   </ItemGroup>
 
   <ItemGroup>

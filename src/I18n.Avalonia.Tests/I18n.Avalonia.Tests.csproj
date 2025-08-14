@@ -25,5 +25,4 @@
         <ProjectReference Include="..\I18n.Avalonia.Sample\I18n.Avalonia.Sample.csproj" />
     </ItemGroup>
 
-
 </Project>
