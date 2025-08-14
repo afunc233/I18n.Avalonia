@@ -9,7 +9,7 @@ internal class Observable<T>(T value) : IObservable<T?>, IDisposable
 
     private readonly object _gate = new();
 
-    private IList<IObserver<T?>> _observers = [];
+    private IList<WeakReference<IObserver<T?>>> _weakReferencesObservers = [];
 
     private bool _isDisposed;
 
@@ -23,9 +23,11 @@ internal class Observable<T>(T value) : IObservable<T?>, IDisposable
         lock (_gate)
         {
             CheckDisposed();
-            _observers.Add(observer);
+            // 修改为弱引用
+            var weakReference = new WeakReference<IObserver<T?>>(observer);
+            _weakReferencesObservers.Add(weakReference);
             observer.OnNext(_value);
-            return new Subscription(this, observer);
+            return new Subscription(this, weakReference);
         }
     }
 
@@ -46,7 +48,7 @@ internal class Observable<T>(T value) : IObservable<T?>, IDisposable
         lock (_gate)
         {
             _isDisposed = true;
-            _observers = [];
+            _weakReferencesObservers = [];
             _value = default(T);
         }
     }
@@ -61,35 +63,38 @@ internal class Observable<T>(T value) : IObservable<T?>, IDisposable
 
     public void OnNext(T? value)
     {
-        IList<IObserver<T?>>? observerArray;
+        IList<WeakReference<IObserver<T?>>>? observerArray;
         lock (_gate)
         {
             CheckDisposed();
             _value = value;
-            observerArray = _observers;
+            observerArray = _weakReferencesObservers;
         }
 
-        foreach (var observer in observerArray)
-            observer.OnNext(value);
+        foreach (var weakReference in observerArray)
+        {
+            if (weakReference.TryGetTarget(out var observer))
+            {
+                observer.OnNext(value);
+            }
+        }
     }
 
 
-    private void Unsubscribe(IObserver<T?> observer)
+    private void Unsubscribe(WeakReference<IObserver<T?>> weakReference)
     {
         lock (_gate)
         {
             CheckDisposed();
-            _observers.Remove(observer);
+            _weakReferencesObservers.Remove(weakReference);
         }
     }
 
-    private sealed class Subscription(Observable<T> subject, IObserver<T?>? observer) : IDisposable
+    private sealed class Subscription(Observable<T> subject, WeakReference<IObserver<T?>> weakReference) : IDisposable
     {
         public void Dispose()
         {
-            if (observer is null) return;
-
-            subject.Unsubscribe(observer);
+            subject.Unsubscribe(weakReference);
         }
     }
 }
