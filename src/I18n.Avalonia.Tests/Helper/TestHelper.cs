@@ -27,10 +27,13 @@ internal static class TestHelper
     internal static CultureInfo fr = CultureInfo.GetCultureInfo("fr");
 
     private static ViewModel? vm;
-    
-    internal static ViewModel VM => vm ??= new ViewModel();
 
-    private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+    private static readonly SemaphoreSlim _semaphore = new(1, 1);
+
+    internal static ViewModel VM
+    {
+        get => vm ??= new ViewModel();
+    }
 
 
     internal static void Excute(Action action)

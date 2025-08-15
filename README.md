@@ -76,15 +76,17 @@ i18n:I18nAttached.Args="{Binding (i18n:I18nAttached.Args),RelativeSource={Relati
 
 使用 **public static partial** 类 和 **ResxKeysOfAttribute** 标识 生成类的 命名空间 和 对应的 类名
 
-
 **要看生成代码的话 需要您先在 IDE 里 生成本项目**
 
 - [ResxKeysGenerator.cs](./src/I18n.Avalonia.Generator/ResxKeysGenerator.cs):
-  本项目中生效的 SourceGenerator 首先会生成 ResxKeysOfAttribute 供项目使用，用法可参考 [LangKeys.cs](./src/I18n.Avalonia.Sample/I18ns/LangKeys.cs)
+  本项目中生效的 SourceGenerator 首先会生成 ResxKeysOfAttribute
+  供项目使用，用法可参考 [LangKeys.cs](./src/I18n.Avalonia.Sample/I18ns/LangKeys.cs)
 
 ### I18n.Avalonia.Sample
 
-一个 引用 I18n.Avalonia.Generator 的项目. 需要注意项目文件 [I18n.Avalonia.Sample.csproj](./src/I18n.Avalonia.Sample/I18n.Avalonia.Sample.csproj) 里的 `ProjectReference`
+一个 引用 I18n.Avalonia.Generator 的项目.
+需要注意项目文件 [I18n.Avalonia.Sample.csproj](./src/I18n.Avalonia.Sample/I18n.Avalonia.Sample.csproj) 里的
+`ProjectReference`
 , 确保是作为SourceGenerator 引入的 关键点 就在设置 `OutputItemType="Analyzer" ReferenceOutputAssembly="false"`
 
 ### I18n.Avalonia.Tests

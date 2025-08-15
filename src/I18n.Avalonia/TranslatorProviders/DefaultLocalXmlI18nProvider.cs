@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Xml;
 
@@ -8,10 +7,7 @@ public class DefaultLocalXmlI18nProvider : DefaultXmlI18nProvider
 {
     public DefaultLocalXmlI18nProvider(string filePath)
     {
-        if (!Directory.Exists(filePath))
-        {
-            throw new DirectoryNotFoundException(filePath);
-        }
+        if (!Directory.Exists(filePath)) throw new DirectoryNotFoundException(filePath);
 
         foreach (var file in Directory.EnumerateFiles(filePath))
         {

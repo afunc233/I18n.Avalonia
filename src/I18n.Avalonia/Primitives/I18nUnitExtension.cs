@@ -14,10 +14,7 @@ internal static class I18nUnitExtension
         {
             var args = bindingValues.ToList();
             var format = args.FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(format))
-            {
-                return format;
-            }
+            if (string.IsNullOrWhiteSpace(format)) return format;
 
             try
             {
@@ -36,10 +33,9 @@ internal static class I18nUnitExtension
         var argList = (args ?? []).ToList();
         if (argList.Count <= 0) return retBinding;
 
-        var bindings = new List<IBinding> { retBinding, };
+        var bindings = new List<IBinding> { retBinding };
 
         foreach (var arg in argList)
-        {
             switch (arg)
             {
                 case I18nUnit unitArg:
@@ -47,10 +43,7 @@ internal static class I18nUnitExtension
                     break;
                 case I18nExtension i18:
                     var i18nProvideValue = i18.ProvideValue(null);
-                    if (i18nProvideValue is IBinding i18nBinding)
-                    {
-                        bindings.Add(i18nBinding);
-                    }
+                    if (i18nProvideValue is IBinding i18nBinding) bindings.Add(i18nBinding);
 
                     break;
                 case IBinding binding:
@@ -63,9 +56,8 @@ internal static class I18nUnitExtension
                     bindings.Add(new Binding { Source = arg.ToString() });
                     break;
             }
-        }
 
-        retBinding = new MultiBinding { Bindings = bindings, Converter = s_funcMultiValueConverter, };
+        retBinding = new MultiBinding { Bindings = bindings, Converter = s_funcMultiValueConverter };
 
         return retBinding;
     }

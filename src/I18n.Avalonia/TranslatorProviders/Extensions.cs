@@ -27,15 +27,12 @@ public static class Extensions
             return provider.DefaultCultureValue.TryGetValue(k, out var defaultValue) ? defaultValue : k;
         }
     }
-    
+
     internal static void ParseXml2Dic(this XmlNode rootNode, Dictionary<string, string> cultureValue)
     {
         foreach (XmlNode childNode in rootNode.ChildNodes)
         {
-            if (childNode is not XmlElement element)
-            {
-                continue;
-            }
+            if (childNode is not XmlElement element) continue;
 
             cultureValue.Add(element.Name, element.InnerText);
         }

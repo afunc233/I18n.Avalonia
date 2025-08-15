@@ -15,7 +15,7 @@ public class I18nExtensionTest
         {
             I18nProvider.SetCulture(TestHelper.zh);
 
-            var i18n = new I18nExtension() { Key = LangKeys.Chinese };
+            var i18n = new I18nExtension { Key = LangKeys.Chinese };
 
             Assert.True(string.Equals("中文", i18n.Key.CurrentValue));
 
@@ -35,7 +35,8 @@ public class I18nExtensionTest
     {
         TestHelper.Excute(() =>
         {
-            const string testAxaml = @"<TextBlock Name='textBlock' Text='{i18n:I18n Key={x:Static sample:LangKeys.Chinese}}' />";
+            const string testAxaml =
+                @"<TextBlock Name='textBlock' Text='{i18n:I18n Key={x:Static sample:LangKeys.Chinese}}' />";
 
             var xaml = TestHelper.AxamlFormat.Replace(TestHelper.TestAxamlPlaceholder, testAxaml);
 
@@ -177,7 +178,8 @@ public class I18nExtensionTest
     {
         TestHelper.Excute(() =>
         {
-            const string testAxaml = @"<TextBlock Name='textBlock' Text='{i18n:I18n Key={x:Static sample:EmbeddedXmlLangKeys.a}}' />";
+            const string testAxaml =
+                @"<TextBlock Name='textBlock' Text='{i18n:I18n Key={x:Static sample:EmbeddedXmlLangKeys.a}}' />";
 
             var xaml = TestHelper.AxamlFormat.Replace(TestHelper.TestAxamlPlaceholder, testAxaml);
 
@@ -196,14 +198,15 @@ public class I18nExtensionTest
 
             Assert.True(string.Equals("a", textBlock.Text));
         });
-    } 
-    
+    }
+
     [Fact]
     public void LocalXmlKey()
     {
         TestHelper.Excute(() =>
         {
-            const string testAxaml = @"<TextBlock Name='textBlock' Text='{i18n:I18n Key={x:Static sample:LocalXmlLangKeys.a}}' />";
+            const string testAxaml =
+                @"<TextBlock Name='textBlock' Text='{i18n:I18n Key={x:Static sample:LocalXmlLangKeys.a}}' />";
 
             var xaml = TestHelper.AxamlFormat.Replace(TestHelper.TestAxamlPlaceholder, testAxaml);
 

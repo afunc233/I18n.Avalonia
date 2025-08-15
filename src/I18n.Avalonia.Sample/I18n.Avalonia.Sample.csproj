@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\I18n.Avalonia.Generator\I18n.Avalonia.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    <ProjectReference Include="..\I18n.Avalonia\I18n.Avalonia.csproj" />
+    <ProjectReference Include="..\I18n.Avalonia.Generator\I18n.Avalonia.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+    <ProjectReference Include="..\I18n.Avalonia\I18n.Avalonia.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
@@ -42,20 +42,20 @@
     <None Include="Xml\lang_fr.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Remove="EmbeddedResourceXml2\lang2_fr.xml" />
-    <None Remove="EmbeddedResourceXml\lang.xml" />
-    <None Remove="EmbeddedResourceXml\lang_en.xml" />
-    <None Remove="EmbeddedResourceXml\lang_fr.xml" />
+    <None Remove="EmbeddedResourceXml2\lang2_fr.xml"/>
+    <None Remove="EmbeddedResourceXml\lang.xml"/>
+    <None Remove="EmbeddedResourceXml\lang_en.xml"/>
+    <None Remove="EmbeddedResourceXml\lang_fr.xml"/>
     <EmbeddedResource Include="EmbeddedResourceXml\lang.xml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
 
-    <None Remove="EmbeddedResourceXml\lang.fr.xml" />
-    <None Remove="EmbeddedResourceXml2\lang2.xml" />
-    <None Remove="EmbeddedResourceXml2\lang2.fr.xml" />
-    <EmbeddedResource Include="EmbeddedResourceXml\lang_en.xml" />
-    <EmbeddedResource Include="EmbeddedResourceXml\lang_fr.xml" />
-    <None Remove="Xml\lang.fr.xml" />
+    <None Remove="EmbeddedResourceXml\lang.fr.xml"/>
+    <None Remove="EmbeddedResourceXml2\lang2.xml"/>
+    <None Remove="EmbeddedResourceXml2\lang2.fr.xml"/>
+    <EmbeddedResource Include="EmbeddedResourceXml\lang_en.xml"/>
+    <EmbeddedResource Include="EmbeddedResourceXml\lang_fr.xml"/>
+    <None Remove="Xml\lang.fr.xml"/>
     <None Include="Xml\lang_en.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

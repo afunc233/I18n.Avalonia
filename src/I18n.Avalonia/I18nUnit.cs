@@ -7,9 +7,15 @@ public class I18nUnit(ITranslatorProvider translatorProvider, string key)
 {
     private readonly Observable<string?> _value = new(key);
 
-    public string? CurrentValue => _value.Value;
+    public string? CurrentValue
+    {
+        get => _value.Value;
+    }
 
-    public IObservable<string?> Value => _value;
+    public IObservable<string?> Value
+    {
+        get => _value;
+    }
 
     private string? Next()
     {

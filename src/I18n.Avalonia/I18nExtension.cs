@@ -10,13 +10,6 @@ namespace I18n.Avalonia;
 
 public sealed class I18nExtension : MarkupExtension
 {
-    public I18nUnit Key { get; init; } = null!;
-
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-    [DefaultValue(null)]
-    [Content]
-    public IEnumerable<object> Args { get; init; } = new List<object>();
-
     public I18nExtension()
     {
     }
@@ -31,6 +24,13 @@ public sealed class I18nExtension : MarkupExtension
         Key = key;
         Args = [args];
     }
+
+    public I18nUnit Key { get; init; } = null!;
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [DefaultValue(null)]
+    [Content]
+    public IEnumerable<object> Args { get; init; } = new List<object>();
 
     public override object ProvideValue(IServiceProvider? serviceProvider)
     {

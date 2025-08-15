@@ -108,41 +108,4 @@ public class I18nAttachedTest
             Assert.True(string.Equals("1 + 1 = 2", textBlock.Text));
         });
     }
-    
-    [Fact]
-    public void TestLangXml()
-    {
-        // TestHelper.Excute(() =>
-        // {
-        //     ITranslatorProvider xmlTranslator = new XmlTranslatorProvider("xml//lang.xml",I18nProvider.Instance.Culture);
-        //     xmlTranslator.GetString("a");
-        //     xmlTranslator.GetString("b");
-        //     xmlTranslator.GetString("c");
-        //     xmlTranslator.GetString("d");
-        // });
-    }
-    [Fact]
-    public void TestLangXml2()
-    {
-        TestHelper.Excute(() =>
-        {
-            var textBlock = new TextBlock();
-
-            // I18nAttached.SetKey(textBlock, LangXmlKeys.c);
-            // I18nAttached.SetTextProperty(textBlock, TextBlock.TextProperty);
-            // I18nAttached.SetArgs(textBlock, [1, 1, 2]);
-            //
-            // TestHelper.VM.Culture = TestHelper.zh;
-            //
-            // Assert.True(string.Equals("1 + 1 = 2", textBlock.Text));
-            //
-            // TestHelper.VM.Culture = TestHelper.en;
-            //
-            // Assert.True(string.Equals("1 + 1 = 2", textBlock.Text));
-            //
-            // TestHelper.VM.Culture = TestHelper.fr;
-            //
-            // Assert.True(string.Equals("1 + 1 = 2", textBlock.Text));
-        });
-    }
 }

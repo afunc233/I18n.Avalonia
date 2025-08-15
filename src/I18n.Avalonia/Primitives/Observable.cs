@@ -5,31 +5,12 @@ namespace I18n.Avalonia.Primitives;
 
 internal class Observable<T>(T value) : IObservable<T?>, IDisposable
 {
-    private T? _value = value;
-
     private readonly object _gate = new();
 
-    private IList<WeakReference<IObserver<T?>>> _weakReferencesObservers = [];
-
     private bool _isDisposed;
+    private T? _value = value;
 
-    public IDisposable Subscribe(IObserver<T?> observer)
-    {
-        if (observer is null)
-        {
-            throw new ArgumentNullException(nameof(observer));
-        }
-
-        lock (_gate)
-        {
-            CheckDisposed();
-            // 修改为弱引用
-            var weakReference = new WeakReference<IObserver<T?>>(observer);
-            _weakReferencesObservers.Add(weakReference);
-            observer.OnNext(_value);
-            return new Subscription(this, weakReference);
-        }
-    }
+    private IList<WeakReference<IObserver<T?>>> _weakReferencesObservers = [];
 
     public T? Value
     {
@@ -49,16 +30,28 @@ internal class Observable<T>(T value) : IObservable<T?>, IDisposable
         {
             _isDisposed = true;
             _weakReferencesObservers = [];
-            _value = default(T);
+            _value = default;
+        }
+    }
+
+    public IDisposable Subscribe(IObserver<T?> observer)
+    {
+        if (observer is null) throw new ArgumentNullException(nameof(observer));
+
+        lock (_gate)
+        {
+            CheckDisposed();
+            // 修改为弱引用
+            var weakReference = new WeakReference<IObserver<T?>>(observer);
+            _weakReferencesObservers.Add(weakReference);
+            observer.OnNext(_value);
+            return new Subscription(this, weakReference);
         }
     }
 
     private void CheckDisposed()
     {
-        if (_isDisposed)
-        {
-            throw new ObjectDisposedException($"{nameof(I18nUnit)} already disposed");
-        }
+        if (_isDisposed) throw new ObjectDisposedException($"{nameof(I18nUnit)} already disposed");
     }
 
     public void OnNext(T? value)
@@ -72,12 +65,8 @@ internal class Observable<T>(T value) : IObservable<T?>, IDisposable
         }
 
         foreach (var weakReference in observerArray)
-        {
             if (weakReference.TryGetTarget(out var observer))
-            {
                 observer.OnNext(value);
-            }
-        }
     }
 
 

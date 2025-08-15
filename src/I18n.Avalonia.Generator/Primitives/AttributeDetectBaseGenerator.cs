@@ -1,6 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -27,9 +25,7 @@ internal static class GeneratorAttributeSyntaxContextExtensions
         this GeneratorAttributeSyntaxContext context, string attributeName, CancellationToken token)
     {
         if (context.TargetNode is not ClassDeclarationSyntax node)
-        {
             return new AttributeContextAndArgumentSyntax(context, null);
-        }
 
         var attribute = node.GetSpecifiedAttribute(context.SemanticModel, attributeName, token);
 
@@ -85,15 +81,10 @@ internal abstract class AbsAttributeDetectGenerator : IAttributeDetectGenerator<
 internal abstract class AbsAttributeDetectGenerator<T> : IAttributeDetectGenerator<AttributeContextAndArgumentSyntax, T>
 {
     public abstract string AttributeName { get; }
-    
+
     public AttributeContextAndArgumentSyntax Transform(GeneratorAttributeSyntaxContext context, CancellationToken token)
     {
         return context.ToAttributeContextAndArgumentSyntax(AttributeName, token);
-    }
-    
-    protected virtual bool IsPartialClass(SyntaxNode node, CancellationToken token)
-    {
-        return node.IsPublicStaticPartialClass();
     }
 
     public virtual void Initialize(IncrementalGeneratorInitializationContext context)
@@ -101,7 +92,12 @@ internal abstract class AbsAttributeDetectGenerator<T> : IAttributeDetectGenerat
         var provider = context.SyntaxProvider.ForAttributeWithMetadataName(
             AttributeName, IsPartialClass, Transform);
 
-        context.RegisterSourceOutput(ConvertProvider(context,provider), GenerateCode);
+        context.RegisterSourceOutput(ConvertProvider(context, provider), GenerateCode);
+    }
+
+    protected virtual bool IsPartialClass(SyntaxNode node, CancellationToken token)
+    {
+        return node.IsPublicStaticPartialClass();
     }
 
     internal abstract IncrementalValuesProvider<(AttributeContextAndArgumentSyntax, T)> ConvertProvider(

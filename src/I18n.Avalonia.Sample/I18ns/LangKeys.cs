@@ -8,19 +8,19 @@ using I18n.Avalonia.TranslatorProviders;
 namespace I18n.Avalonia.Sample.I18ns;
 
 /// <summary>
-/// must public static partial 
+///     must public static partial
 /// </summary>
 [ResxI18nOf(typeof(Resources))]
 public static partial class LangKeys;
 
 /// <summary>
-/// also support multiple Resources
+///     also support multiple Resources
 /// </summary>
 [ResxI18nOf(typeof(ResourcesAbc))]
 public static partial class LangAbcKeys;
 
 /// <summary>
-/// also support local xml 
+///     also support local xml
 /// </summary>
 [XmlI18n]
 public static partial class LocalXmlLangKeys
@@ -29,7 +29,7 @@ public static partial class LocalXmlLangKeys
     [XmlI18nKeys] private static readonly string[] s_keys =
     [
         "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
-        "w", "x", "y", "z",
+        "w", "x", "y", "z"
     ];
 #pragma warning restore CA1823
 
@@ -38,7 +38,7 @@ public static partial class LocalXmlLangKeys
 }
 
 /// <summary>
-/// also support multiple Resources
+///     also support multiple Resources
 /// </summary>
 [XmlI18n]
 public static partial class EmbeddedXmlLangKeys
@@ -47,7 +47,7 @@ public static partial class EmbeddedXmlLangKeys
     [XmlI18nKeys] private static readonly string[] s_keys =
     [
         "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
-        "w", "x", "y", "z",
+        "w", "x", "y", "z"
     ];
 #pragma warning restore CA1823
 

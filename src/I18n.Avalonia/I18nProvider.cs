@@ -6,16 +6,15 @@ namespace I18n.Avalonia;
 
 public static class I18nProvider
 {
-    public static event EventHandler<CultureInfo>? OnCultureChanged;
-
-    public static CultureInfo Culture { get; private set; }
-
     public static readonly IList<ITranslatorProvider> TranslatorProviders = [];
 
     static I18nProvider()
     {
         Culture = CultureInfo.CurrentUICulture;
     }
+
+    public static CultureInfo Culture { get; private set; }
+    public static event EventHandler<CultureInfo>? OnCultureChanged;
 
     public static void Add(ITranslatorProvider provider)
     {
@@ -29,10 +28,7 @@ public static class I18nProvider
         foreach (var translatorProvider in TranslatorProviders)
         {
             translatorProvider.SetCulture(culture);
-            foreach (var i18nUnit in translatorProvider.I18nUnits)
-            {
-                i18nUnit.Refresh();
-            }
+            foreach (var i18nUnit in translatorProvider.I18nUnits) i18nUnit.Refresh();
         }
 
         OnCultureChanged?.Invoke(null, Culture);

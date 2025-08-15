@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -17,15 +16,38 @@ public interface IXmlTranslatorProvider : ITranslatorProvider
 
 public abstract class DefaultXmlI18nProvider : IXmlTranslatorProvider
 {
-    private CultureInfo _culture = I18nProvider.Culture;
-
-    private readonly ICollection<I18nUnit> _i18nUnits = [];
-
     private readonly Dictionary<CultureInfo, Dictionary<string, string>> _cultureValues = new();
 
     private readonly Dictionary<string, string> _defaultCultureValue = new();
 
-    ICollection<I18nUnit> ITranslatorProvider.I18nUnits => _i18nUnits;
+    private CultureInfo _culture = I18nProvider.Culture;
+
+    ICollection<I18nUnit> ITranslatorProvider.I18nUnits { get; } = [];
+
+    void ITranslatorProvider.SetCulture(CultureInfo culture)
+    {
+        _culture = culture;
+    }
+
+    string? ITranslatorProvider.GetString(string key)
+    {
+        return this.GetStringOrDefault(key);
+    }
+
+    Dictionary<CultureInfo, Dictionary<string, string>> IXmlTranslatorProvider.CultureValues
+    {
+        get => _cultureValues;
+    }
+
+    Dictionary<string, string> IXmlTranslatorProvider.DefaultCultureValue
+    {
+        get => _defaultCultureValue;
+    }
+
+    CultureInfo IXmlTranslatorProvider.Culture
+    {
+        get => _culture;
+    }
 
     protected virtual CultureInfo? GetCulture(XmlDocument xmlDocument)
     {
@@ -47,9 +69,7 @@ public abstract class DefaultXmlI18nProvider : IXmlTranslatorProvider
         if (xmlDocumentCulture is null)
         {
             if (_defaultCultureValue.Any())
-            {
                 throw new XmlException("xml document culture is null, and default culture value is set.");
-            }
 
             ParseXml2Dic(xmlDocument, _defaultCultureValue);
         }
@@ -60,20 +80,4 @@ public abstract class DefaultXmlI18nProvider : IXmlTranslatorProvider
             _cultureValues.Add(xmlDocumentCulture, dic);
         }
     }
-
-    void ITranslatorProvider.SetCulture(CultureInfo culture)
-    {
-        _culture = culture;
-    }
-
-    string? ITranslatorProvider.GetString(string key)
-    {
-        return this.GetStringOrDefault(key);
-    }
-
-    Dictionary<CultureInfo, Dictionary<string, string>> IXmlTranslatorProvider.CultureValues => _cultureValues;
-
-    Dictionary<string, string> IXmlTranslatorProvider.DefaultCultureValue => _defaultCultureValue;
-
-    CultureInfo IXmlTranslatorProvider.Culture => _culture;
 }

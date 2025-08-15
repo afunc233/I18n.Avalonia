@@ -6,7 +6,7 @@ namespace I18n.Avalonia.Generator.Primitives;
 internal static class SyntaxNodeExtension
 {
     /// <summary>
-    /// 从 SyntaxNode 获取 一个 AttributeSyntax
+    ///     从 SyntaxNode 获取 一个 AttributeSyntax
     /// </summary>
     /// <param name="node"></param>
     /// <param name="semanticModel"></param>
