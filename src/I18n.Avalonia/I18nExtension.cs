@@ -14,14 +14,13 @@ public sealed class I18nExtension : MarkupExtension
     {
     }
 
-    public I18nExtension(I18nUnit key)
+    public I18nExtension(I18nUnit key) : this()
     {
         Key = key;
     }
 
-    public I18nExtension(I18nUnit key, BindingBase args)
+    public I18nExtension(I18nUnit key, BindingBase args) : this(key)
     {
-        Key = key;
         Args = [args];
     }
 

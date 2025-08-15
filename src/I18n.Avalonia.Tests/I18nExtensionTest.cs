@@ -1,14 +1,16 @@
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Markup.Xaml;
 using I18n.Avalonia.Sample.I18ns;
 using I18n.Avalonia.Tests.Helper;
-using Xunit;
+using I18n.Avalonia.Tests.VM;
+using NUnit.Framework;
 
 namespace I18n.Avalonia.Tests;
 
 public class I18nExtensionTest
 {
-    [Fact]
+    [Test]
     public void KeyPropertyInit()
     {
         TestHelper.Excute(() =>
@@ -17,20 +19,20 @@ public class I18nExtensionTest
 
             var i18n = new I18nExtension { Key = LangKeys.Chinese };
 
-            Assert.True(string.Equals("中文", i18n.Key.CurrentValue));
+            Assert.That(string.Equals("中文", i18n.Key.CurrentValue));
 
             I18nProvider.SetCulture(TestHelper.en);
 
-            Assert.True(string.Equals("Chinese", i18n.Key.CurrentValue));
+            Assert.That(string.Equals("Chinese", i18n.Key.CurrentValue));
 
             I18nProvider.SetCulture(TestHelper.fr);
 
-            Assert.True(string.Equals("Chinois", i18n.Key.CurrentValue));
+            Assert.That(string.Equals("Chinois", i18n.Key.CurrentValue));
         });
     }
 
 
-    [Fact]
+    [Test]
     public void Key()
     {
         TestHelper.Excute(() =>
@@ -44,21 +46,22 @@ public class I18nExtensionTest
             var userControl = (UserControl)AvaloniaRuntimeXamlLoader.Load(xaml);
             var textBlock = userControl.FindControl<TextBlock>("textBlock");
 
-            Assert.NotNull(textBlock);
+            Assert.That(textBlock, Is.Not.Null);
+
             I18nProvider.SetCulture(TestHelper.zh);
-            Assert.True(string.Equals("中文", textBlock.Text));
+            Assert.That(string.Equals("中文", textBlock.Text));
 
             I18nProvider.SetCulture(TestHelper.en);
 
-            Assert.True(string.Equals("Chinese", textBlock.Text));
+            Assert.That(string.Equals("Chinese", textBlock.Text));
 
             I18nProvider.SetCulture(TestHelper.fr);
 
-            Assert.True(string.Equals("Chinois", textBlock.Text));
+            Assert.That(string.Equals("Chinois", textBlock.Text));
         });
     }
 
-    [Fact]
+    [Test]
     public void KeyAndArgs()
     {
         TestHelper.Excute(() =>
@@ -84,22 +87,23 @@ public class I18nExtensionTest
 
             var textBlock = userControl.FindControl<TextBlock>("textBlock");
 
-            Assert.NotNull(textBlock);
+            Assert.That(textBlock, Is.Not.Null);
+
             TestHelper.VM.Culture = TestHelper.zh;
 
-            Assert.True(string.Equals("当前的语言是 中文", textBlock.Text));
+            Assert.That(string.Equals("当前的语言是 中文", textBlock.Text));
 
             TestHelper.VM.Culture = TestHelper.en;
 
-            Assert.True(string.Equals("Current Language is English", textBlock.Text));
+            Assert.That(string.Equals("Current Language is English", textBlock.Text));
 
             TestHelper.VM.Culture = TestHelper.fr;
 
-            Assert.True(string.Equals("Le Langue actuel est français", textBlock.Text));
+            Assert.That(string.Equals("Le Langue actuel est français", textBlock.Text));
         });
     }
 
-    [Fact]
+    [Test]
     public void KeyAndValueArgs()
     {
         TestHelper.Excute(() =>
@@ -126,22 +130,23 @@ public class I18nExtensionTest
 
             var textBlock = userControl.FindControl<TextBlock>("textBlock");
 
-            Assert.NotNull(textBlock);
+            Assert.That(textBlock, Is.Not.Null);
+
             TestHelper.VM.Culture = TestHelper.zh;
 
-            Assert.True(string.Equals("1 + 1 = 2", textBlock.Text));
+            Assert.That(string.Equals("1 + 1 = 2", textBlock.Text));
 
             TestHelper.VM.Culture = TestHelper.en;
 
-            Assert.True(string.Equals("1 + 1 = 2", textBlock.Text));
+            Assert.That(string.Equals("1 + 1 = 2", textBlock.Text));
 
             TestHelper.VM.Culture = TestHelper.fr;
 
-            Assert.True(string.Equals("1 + 1 = 2", textBlock.Text));
+            Assert.That(string.Equals("1 + 1 = 2", textBlock.Text));
         });
     }
 
-    [Fact]
+    [Test]
     public void BindingKey()
     {
         TestHelper.Excute(() =>
@@ -158,22 +163,22 @@ public class I18nExtensionTest
 
             var textBlock = userControl.FindControl<TextBlock>("textBlock");
 
-            Assert.NotNull(textBlock);
+            Assert.That(textBlock, Is.Not.Null);
             TestHelper.VM.Culture = TestHelper.zh;
 
-            Assert.True(string.Equals("中文", textBlock.Text));
+            Assert.That(string.Equals("中文", textBlock.Text));
 
             TestHelper.VM.Culture = TestHelper.en;
 
-            Assert.True(string.Equals("Chinese", textBlock.Text));
+            Assert.That(string.Equals("Chinese", textBlock.Text));
 
             TestHelper.VM.Culture = TestHelper.fr;
 
-            Assert.True(string.Equals("Chinois", textBlock.Text));
+            Assert.That(string.Equals("Chinois", textBlock.Text));
         });
     }
 
-    [Fact]
+    [Test]
     public void EmbeddedXmlKey()
     {
         TestHelper.Excute(() =>
@@ -186,21 +191,22 @@ public class I18nExtensionTest
             var userControl = (UserControl)AvaloniaRuntimeXamlLoader.Load(xaml);
             var textBlock = userControl.FindControl<TextBlock>("textBlock");
 
-            Assert.NotNull(textBlock);
+            Assert.That(textBlock, Is.Not.Null);
+
             I18nProvider.SetCulture(TestHelper.zh);
-            Assert.True(string.Equals("甲", textBlock.Text));
+            Assert.That(string.Equals("甲", textBlock.Text));
 
             I18nProvider.SetCulture(TestHelper.en);
 
-            Assert.True(string.Equals("a", textBlock.Text));
+            Assert.That(string.Equals("a", textBlock.Text));
 
             I18nProvider.SetCulture(TestHelper.fr);
 
-            Assert.True(string.Equals("a", textBlock.Text));
+            Assert.That(string.Equals("a", textBlock.Text));
         });
     }
 
-    [Fact]
+    [Test]
     public void LocalXmlKey()
     {
         TestHelper.Excute(() =>
@@ -213,17 +219,95 @@ public class I18nExtensionTest
             var userControl = (UserControl)AvaloniaRuntimeXamlLoader.Load(xaml);
             var textBlock = userControl.FindControl<TextBlock>("textBlock");
 
-            Assert.NotNull(textBlock);
+            Assert.That(textBlock, Is.Not.Null);
+
             I18nProvider.SetCulture(TestHelper.zh);
-            Assert.True(string.Equals("甲", textBlock.Text));
+            Assert.That(string.Equals("甲", textBlock.Text));
 
             I18nProvider.SetCulture(TestHelper.en);
 
-            Assert.True(string.Equals("a", textBlock.Text));
+            Assert.That(string.Equals("a", textBlock.Text));
 
             I18nProvider.SetCulture(TestHelper.fr);
 
-            Assert.True(string.Equals("a", textBlock.Text));
+            Assert.That(string.Equals("a", textBlock.Text));
+        });
+    }
+
+    [Test]
+    public void I18nExtension_Constructor()
+    {
+        TestHelper.Excute(() =>
+        {
+            var i18nExtension = new I18nExtension(LangAbcKeys.Chinese);
+
+            Assert.That(i18nExtension.Key, Is.EqualTo(LangAbcKeys.Chinese));
+            Assert.That(i18nExtension.Args, Is.Empty);
+        });
+    }
+
+
+    [Test]
+    public void I18nExtension_Constructor_WithArgs()
+    {
+        TestHelper.Excute(() =>
+        {
+            var vm = new ViewModel();
+            var i18nExtension = new I18nExtension(LangKeys.Current_language_is,
+                new Binding(nameof(ViewModel.Language)) { Source = vm });
+
+            Assert.That(i18nExtension.Key, Is.EqualTo(LangKeys.Current_language_is));
+            Assert.That(i18nExtension.Args, Is.Not.Empty);
+
+            var result = i18nExtension.ProvideValue(null);
+
+            var textBlock = new TextBlock();
+
+            if (result is IBinding binding)
+            {
+                textBlock.Bind(TextBlock.TextProperty, binding);
+
+                I18nProvider.SetCulture(TestHelper.zh);
+
+                Assert.That(textBlock.Text, Is.Null);
+                I18nProvider.SetCulture(TestHelper.en);
+                Assert.That(textBlock.Text, Is.Null);
+            }
+            else
+            {
+                Assert.Fail("result is not IBinding");
+            }
+        });
+    }
+
+    [Test]
+    public void I18nExtension_Constructor_WithArgs2()
+    {
+        TestHelper.Excute(() =>
+        {
+            var i18nExtension = new I18nExtension(LangKeys.Current_language_is) { Args = [LangKeys.Language, "中文"] };
+
+            Assert.That(i18nExtension.Key, Is.EqualTo(LangKeys.Current_language_is));
+            Assert.That(i18nExtension.Args, Is.Not.Empty);
+
+            var result = i18nExtension.ProvideValue(null);
+
+            var textBlock = new TextBlock();
+
+            if (result is IBinding binding)
+            {
+                textBlock.Bind(TextBlock.TextProperty, binding);
+
+                I18nProvider.SetCulture(TestHelper.zh);
+
+                Assert.That(textBlock.Text, Is.EqualTo("当前的语言是 中文"));
+                I18nProvider.SetCulture(TestHelper.en);
+                Assert.That(textBlock.Text, Is.EqualTo("Current Language is 中文"));
+            }
+            else
+            {
+                Assert.Fail("result is not IBinding");
+            }
         });
     }
 }

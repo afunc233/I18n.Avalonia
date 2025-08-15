@@ -2,13 +2,13 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using I18n.Avalonia.Sample.I18ns;
 using I18n.Avalonia.Tests.Helper;
-using Xunit;
+using NUnit.Framework;
 
 namespace I18n.Avalonia.Tests;
 
 public class I18nAttachedTest
 {
-    [Fact]
+    [Test]
     public void TestI18nAttachedWithArgs()
     {
         TestHelper.Excute(() =>
@@ -28,22 +28,23 @@ public class I18nAttachedTest
             userControl.DataContext = TestHelper.VM;
             var textBlock = userControl.FindControl<TextBlock>("textBlock");
 
-            Assert.NotNull(textBlock);
+            Assert.That(textBlock, Is.Not.Null);
+
             TestHelper.VM.Culture = TestHelper.zh;
 
-            Assert.True(string.Equals("当前的语言是 中文", textBlock.Text));
+            Assert.That(string.Equals("当前的语言是 中文", textBlock.Text));
 
             TestHelper.VM.Culture = TestHelper.en;
 
-            Assert.True(string.Equals("Current Language is English", textBlock.Text));
+            Assert.That(string.Equals("Current Language is English", textBlock.Text));
 
             TestHelper.VM.Culture = TestHelper.fr;
 
-            Assert.True(string.Equals("Le Langue actuel est français", textBlock.Text));
+            Assert.That(string.Equals("Le Langue actuel est français", textBlock.Text));
         });
     }
 
-    [Fact]
+    [Test]
     public void TestI18nAttachedWithAxamlArgs()
     {
         TestHelper.Excute(() =>
@@ -68,23 +69,23 @@ public class I18nAttachedTest
             userControl.DataContext = TestHelper.VM;
             var textBlock = userControl.FindControl<TextBlock>("textBlock");
 
-            Assert.NotNull(textBlock);
+            Assert.That(textBlock, Is.Not.Null);
 
             TestHelper.VM.Culture = TestHelper.zh;
 
-            Assert.True(string.Equals("1 + 1 = 2", textBlock.Text));
+            Assert.That(string.Equals("1 + 1 = 2", textBlock.Text));
 
             TestHelper.VM.Culture = TestHelper.en;
 
-            Assert.True(string.Equals("1 + 1 = 2", textBlock.Text));
+            Assert.That(string.Equals("1 + 1 = 2", textBlock.Text));
 
             TestHelper.VM.Culture = TestHelper.fr;
 
-            Assert.True(string.Equals("1 + 1 = 2", textBlock.Text));
+            Assert.That(string.Equals("1 + 1 = 2", textBlock.Text));
         });
     }
 
-    [Fact]
+    [Test]
     public void TestI18nAttachedWithCode()
     {
         TestHelper.Excute(() =>
@@ -97,15 +98,15 @@ public class I18nAttachedTest
 
             TestHelper.VM.Culture = TestHelper.zh;
 
-            Assert.True(string.Equals("1 + 1 = 2", textBlock.Text));
+            Assert.That(string.Equals("1 + 1 = 2", textBlock.Text));
 
             TestHelper.VM.Culture = TestHelper.en;
 
-            Assert.True(string.Equals("1 + 1 = 2", textBlock.Text));
+            Assert.That(string.Equals("1 + 1 = 2", textBlock.Text));
 
             TestHelper.VM.Culture = TestHelper.fr;
 
-            Assert.True(string.Equals("1 + 1 = 2", textBlock.Text));
+            Assert.That(string.Equals("1 + 1 = 2", textBlock.Text));
         });
     }
 }

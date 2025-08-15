@@ -42,7 +42,6 @@
     <None Include="Xml\lang_fr.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Remove="EmbeddedResourceXml2\lang2_fr.xml"/>
     <None Remove="EmbeddedResourceXml\lang.xml"/>
     <None Remove="EmbeddedResourceXml\lang_en.xml"/>
     <None Remove="EmbeddedResourceXml\lang_fr.xml"/>
@@ -50,7 +49,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
 
-    <None Remove="EmbeddedResourceXml\lang.fr.xml"/>
     <None Remove="EmbeddedResourceXml2\lang2.xml"/>
     <None Remove="EmbeddedResourceXml2\lang2.fr.xml"/>
     <EmbeddedResource Include="EmbeddedResourceXml\lang_en.xml"/>
