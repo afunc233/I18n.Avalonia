@@ -7,100 +7,14 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace I18n.Avalonia.Generator;
 
 /// <summary>
-/// 
 /// </summary>
 [Generator(LanguageNames.CSharp)]
 internal class ResxI18nGenerator : AbsAttributeDetectGenerator
 {
-    #region 固定量
-
-    private static readonly string Attribute = $"{Const.ResxKeysOfAttributeFullName}";
-
-    private static readonly string[] Exceptions =
-    [
-        "ResourceManager",
-        "Culture"
-    ];
-
-
-    private static readonly string ResxKeysOfAttributeSource =
-        $"""
-         using System;
-
-         namespace {Const.AttributeNamespace};
-         #pragma warning disable CS9113
-         [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-         public class {Const.ResxI18nOfAttribute}(Type resourceType) : Attribute;
-         #pragma warning restore CS9113
-         """;
-
-    private static readonly string Format =
-        """
-        using System;
-        using System.Collections.Generic;
-        using System.Globalization;
-        using I18n.Avalonia;
-
-        namespace $NameSpace$;
-
-        partial class $ClassName$
-        {
-            private static readonly $TranslatorProviderName$ _translator = new $TranslatorProviderName$();
-            
-            #nullable enable
-            class $TranslatorProviderName$ : I18n.Avalonia.ITranslatorProvider
-            {
-                private readonly Dictionary<string, Func<string?>> _translationProviders = new();
-                
-                public List<I18nUnit> I18nUnits { get; } = [];
-                
-                internal $TranslatorProviderName$()
-                {
-                    I18n.Avalonia.I18nProvider.Add(this);
-                }
-                
-                public void AddOrUpdate(string key, Func<string?> value)
-                {
-                    _translationProviders[key] = value;
-                }
-                
-                public void SetCulture(CultureInfo culture)
-                {
-                    $ResxTypeName$.Culture = culture;
-                    
-                    foreach(I18nUnit i18nUnit in I18nUnits)
-                    {
-                        i18nUnit.Refresh();
-                    }
-                }
-                
-                string? ITranslatorProvider.GetString(string key)
-                {
-                    if (_translationProviders.TryGetValue(key, out var valueFunc))
-                    {
-                        return valueFunc.Invoke();
-                    }
-                    return string.Empty;
-                }
-            }
-            #nullable disable
-            
-            static $ClassName$()
-            {
-        $AddOrUpdate$
-        
-        $I18nAddOrUpdate$
-        
-                _translator.SetCulture(I18n.Avalonia.I18nProvider.Culture);
-            }
-        $I18nUnit$
-        }
-
-        """;
-
-    #endregion
-
-    public override string AttributeName => Attribute;
+    public override string AttributeName
+    {
+        get => Attribute;
+    }
 
     public override void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -163,7 +77,7 @@ internal class ResxI18nGenerator : AbsAttributeDetectGenerator
         if (!string.Equals(culturePropertySymbol.Type.Name, nameof(CultureInfo)))
         {
             context.ReportDiagnostic(
-                Diagnostic.Create(DiagnosticDescriptor("ResxI18n0003", DiagnosticSeverity.Error, true),
+                Diagnostic.Create(DiagnosticDescriptor("ResxI18n0004", DiagnosticSeverity.Error, true),
                     culturePropertySymbol.Locations.LastOrDefault(),
                     $"type of {culturePropertySymbol.Name} should be {nameof(CultureInfo)}"));
             return;
@@ -178,12 +92,12 @@ internal class ResxI18nGenerator : AbsAttributeDetectGenerator
 
         var i18nAddOrUpdate = string.Join("\n",
             memberNames.Select(x => $"\t\t_translator.I18nUnits.Add({x});"));
-        
+
         // ReSharper disable once InconsistentNaming
         var i18nUnit = string.Join("\n",
             memberNames.Select(x =>
                 $"""
-                 
+
                      private static readonly I18n.Avalonia.I18nUnit _{x} = new I18n.Avalonia.I18nUnit(_translator, nameof({x}));
                      /// <summary>
                      /// find string like {x}
@@ -212,4 +126,90 @@ internal class ResxI18nGenerator : AbsAttributeDetectGenerator
             defaultSeverity,
             isEnabledByDefault);
     }
+
+    #region 固定量
+
+    private static readonly string Attribute = $"{Const.ResxKeysOfAttributeFullName}";
+
+    private static readonly string[] Exceptions =
+    [
+        "ResourceManager",
+        "Culture"
+    ];
+
+
+    private static readonly string ResxKeysOfAttributeSource =
+        $"""
+         using System;
+
+         namespace {Const.AttributeNamespace};
+         #pragma warning disable CS9113
+         [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+         public class {Const.ResxI18nOfAttribute}(Type resourceType) : Attribute;
+         #pragma warning restore CS9113
+         """;
+
+    private static readonly string Format =
+        """
+        using System;
+        using System.Collections.Generic;
+        using System.Globalization;
+        using I18n.Avalonia;
+
+        namespace $NameSpace$;
+
+        partial class $ClassName$
+        {
+            private static readonly $TranslatorProviderName$ _translator = new $TranslatorProviderName$();
+            
+            #nullable enable
+            class $TranslatorProviderName$ : I18n.Avalonia.ITranslatorProvider
+            {
+                private readonly Dictionary<string, Func<string?>> _translationProviders = new();
+                
+                public ICollection<I18nUnit> I18nUnits { get; } = [];
+                
+                internal $TranslatorProviderName$()
+                {
+                    I18n.Avalonia.I18nProvider.Add(this);
+                }
+                
+                public void AddOrUpdate(string key, Func<string?> value)
+                {
+                    _translationProviders[key] = value;
+                }
+                
+                public void SetCulture(CultureInfo culture)
+                {
+                    $ResxTypeName$.Culture = culture;
+                }
+                
+                string? ITranslatorProvider.GetString(string key)
+                {
+                    if (_translationProviders.TryGetValue(key, out var valueFunc))
+                    {
+                        return valueFunc.Invoke();
+                    }
+                    return string.Empty;
+                }
+            }
+            #nullable disable
+            
+            static $ClassName$()
+            {
+        $AddOrUpdate$
+
+        $I18nAddOrUpdate$
+
+                foreach (var i18nUnit in _translator.I18nUnits)
+                {
+                    i18nUnit.Refresh();
+                }
+            }
+        $I18nUnit$
+        }
+
+        """;
+
+    #endregion
 }

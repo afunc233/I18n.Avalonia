@@ -39,12 +39,20 @@ internal static class GeneratorAttributeSyntaxContextExtensions
 
 internal static class SyntaxNodeExtensions
 {
-    internal static bool IsPartialClass(this SyntaxNode node)
+    internal static bool IsPublicStaticPartialClass(this SyntaxNode node)
     {
         return node is ClassDeclarationSyntax { Parent: not ClassDeclarationSyntax } classDeclarationSyntax
                && classDeclarationSyntax.Modifiers.Any(SyntaxKind.PartialKeyword)
                && classDeclarationSyntax.Modifiers.Any(SyntaxKind.PublicKeyword)
                && classDeclarationSyntax.Modifiers.Any(SyntaxKind.StaticKeyword);
+    }
+
+    internal static bool IsPrivateStaticReadonlyField(this SyntaxNode node)
+    {
+        return node is FieldDeclarationSyntax fieldDeclarationSyntax
+               && fieldDeclarationSyntax.Modifiers.Any(SyntaxKind.PrivateKeyword)
+               && fieldDeclarationSyntax.Modifiers.Any(SyntaxKind.StaticKeyword)
+               && fieldDeclarationSyntax.Modifiers.Any(SyntaxKind.ReadOnlyKeyword);
     }
 }
 
@@ -67,7 +75,7 @@ internal abstract class AbsAttributeDetectGenerator : IAttributeDetectGenerator<
 
     protected virtual bool IsPartialClass(SyntaxNode node, CancellationToken token)
     {
-        return node.IsPartialClass();
+        return node.IsPublicStaticPartialClass();
     }
 
     protected abstract void GenerateCode(SourceProductionContext context,
@@ -85,7 +93,7 @@ internal abstract class AbsAttributeDetectGenerator<T> : IAttributeDetectGenerat
     
     protected virtual bool IsPartialClass(SyntaxNode node, CancellationToken token)
     {
-        return node.IsPartialClass();
+        return node.IsPublicStaticPartialClass();
     }
 
     public virtual void Initialize(IncrementalGeneratorInitializationContext context)

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
-using System.Xml;
+﻿using System;
+using System.IO;
+using System.Reflection;
 using I18n.Avalonia.Attributes;
 using I18n.Avalonia.Sample.Properties;
+using I18n.Avalonia.TranslatorProviders;
 
 namespace I18n.Avalonia.Sample.I18ns;
 
@@ -18,48 +19,38 @@ public static partial class LangKeys;
 [ResxI18nOf(typeof(ResourcesAbc))]
 public static partial class LangAbcKeys;
 
-// /// <summary>
-// /// also support local xml 
-// /// </summary>
-// [LocalXmlI18nOf(typeof(LocalXmlLangKeys), nameof(Parse), "xml")]
-// public static partial class LocalXmlLangKeys
-// {
-//     public static string Parse(string key)
-//     {
-//         return key;
-//     }
-// }
+/// <summary>
+/// also support local xml 
+/// </summary>
+[XmlI18n]
+public static partial class LocalXmlLangKeys
+{
+#pragma warning disable CA1823
+    [XmlI18nKeys] private static readonly string[] s_keys =
+    [
+        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+        "w", "x", "y", "z",
+    ];
+#pragma warning restore CA1823
+
+    [XmlI18nProvider] private static readonly ITranslatorProvider s_translator =
+        new DefaultLocalXmlI18nProvider(Path.Combine(AppContext.BaseDirectory, "Xml"));
+}
 
 /// <summary>
 /// also support multiple Resources
 /// </summary>
-[EmbeddedResourceXmlI18nOf(typeof(EmbeddedResourceXmlLangKeys), nameof(Parser), "EmbeddedResourceXml")]
-public static partial class EmbeddedResourceXmlLangKeys
+[XmlI18n]
+public static partial class EmbeddedXmlLangKeys
 {
-    public static EmbeddedResourceXmlI18nParser Parser()
-    {
-        return new EmbeddedResourceXmlI18nParser();
-    }
+#pragma warning disable CA1823
+    [XmlI18nKeys] private static readonly string[] s_keys =
+    [
+        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+        "w", "x", "y", "z",
+    ];
+#pragma warning restore CA1823
 
-    public class EmbeddedResourceXmlI18nParser : IEmbeddedResourceXmlI18nParser
-    {
-        public string XmlContent { get; set; } = null!;
-        public string XmlName { get; set; } = null!;
-        
-        public CultureInfo Culture { get; } =  null!;
-
-        public List<(string, string)> Parse()
-        {
-            // var xmlDocument = new XmlDocument();
-            // xmlDocument.LoadXml(XmlContent);
-            // 
-            // var list = new List<(string, string)>();
-            // foreach (XmlNode node in nodes)
-            // {
-            //     list.Add((node.Attributes["name"].Value, node.InnerText));
-            // }
-            // return list;
-            return [];
-        }
-    }
+    [XmlI18nProvider] private static readonly ITranslatorProvider s_translator =
+        new DefaultEmbeddedXmlI18nProvider("EmbeddedResourceXml", Assembly.GetExecutingAssembly());
 }

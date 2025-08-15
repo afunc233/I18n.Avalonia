@@ -29,6 +29,10 @@ public static class I18nProvider
         foreach (var translatorProvider in TranslatorProviders)
         {
             translatorProvider.SetCulture(culture);
+            foreach (var i18nUnit in translatorProvider.I18nUnits)
+            {
+                i18nUnit.Refresh();
+            }
         }
 
         OnCultureChanged?.Invoke(null, Culture);

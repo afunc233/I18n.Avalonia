@@ -35,7 +35,7 @@ public class I18nExtensionTest
     {
         TestHelper.Excute(() =>
         {
-            var testAxaml = @"<TextBlock Name='textBlock' Text='{i18n:I18n Key={x:Static sample:LangKeys.Chinese}}' />";
+            const string testAxaml = @"<TextBlock Name='textBlock' Text='{i18n:I18n Key={x:Static sample:LangKeys.Chinese}}' />";
 
             var xaml = TestHelper.AxamlFormat.Replace(TestHelper.TestAxamlPlaceholder, testAxaml);
 
@@ -62,18 +62,18 @@ public class I18nExtensionTest
     {
         TestHelper.Excute(() =>
         {
-            var testAxaml = """
-                            <TextBlock Name='textBlock'>
-                                <TextBlock.Text>
-                                    <i18n:I18n Key="{x:Static sample:LangKeys.Current_language_is}">
-                                        <i18n:I18n.Args>
-                                            <i18n:I18n Key="{x:Static sample:LangKeys.Language}" />
-                                            <Binding Path="((gb:CultureInfo)Culture).NativeName" />
-                                        </i18n:I18n.Args>
-                                    </i18n:I18n>
-                                </TextBlock.Text>
-                            </TextBlock>
-                            """;
+            const string testAxaml = """
+                                     <TextBlock Name='textBlock'>
+                                         <TextBlock.Text>
+                                             <i18n:I18n Key="{x:Static sample:LangKeys.Current_language_is}">
+                                                 <i18n:I18n.Args>
+                                                     <i18n:I18n Key="{x:Static sample:LangKeys.Language}" />
+                                                     <Binding Path="((gb:CultureInfo)Culture).NativeName" />
+                                                 </i18n:I18n.Args>
+                                             </i18n:I18n>
+                                         </TextBlock.Text>
+                                     </TextBlock>
+                                     """;
 
             var xaml = TestHelper.AxamlFormat.Replace(TestHelper.TestAxamlPlaceholder, testAxaml);
 
@@ -103,19 +103,19 @@ public class I18nExtensionTest
     {
         TestHelper.Excute(() =>
         {
-            var testAxaml = """
-                            <TextBlock Name='textBlock'>
-                                <TextBlock.Text>
-                                    <i18n:I18n Key="{x:Static sample:LangKeys.Addition_formula_2}">
-                                        <i18n:I18n.Args>
-                                            <sys:Int32>1</sys:Int32>
-                                            <sys:Int32>1</sys:Int32>
-                                            <sys:Int32>2</sys:Int32>
-                                        </i18n:I18n.Args>
-                                    </i18n:I18n>
-                                </TextBlock.Text>
-                            </TextBlock>
-                            """;
+            const string testAxaml = """
+                                     <TextBlock Name='textBlock'>
+                                         <TextBlock.Text>
+                                             <i18n:I18n Key="{x:Static sample:LangKeys.Addition_formula_2}">
+                                                 <i18n:I18n.Args>
+                                                     <sys:Int32>1</sys:Int32>
+                                                     <sys:Int32>1</sys:Int32>
+                                                     <sys:Int32>2</sys:Int32>
+                                                 </i18n:I18n.Args>
+                                             </i18n:I18n>
+                                         </TextBlock.Text>
+                                     </TextBlock>
+                                     """;
 
             var xaml = TestHelper.AxamlFormat.Replace(TestHelper.TestAxamlPlaceholder, testAxaml);
 
@@ -145,9 +145,9 @@ public class I18nExtensionTest
     {
         TestHelper.Excute(() =>
         {
-            var testAxaml = """
-                            <TextBlock x:Name="textBlock" Text="{Binding Language.Value^}" />
-                            """;
+            const string testAxaml = """
+                                     <TextBlock x:Name="textBlock" Text="{Binding Language.Value^}" />
+                                     """;
 
             var xaml = TestHelper.AxamlFormat.Replace(TestHelper.TestAxamlPlaceholder, testAxaml);
 
@@ -169,6 +169,58 @@ public class I18nExtensionTest
             TestHelper.VM.Culture = TestHelper.fr;
 
             Assert.True(string.Equals("Chinois", textBlock.Text));
+        });
+    }
+
+    [Fact]
+    public void EmbeddedXmlKey()
+    {
+        TestHelper.Excute(() =>
+        {
+            const string testAxaml = @"<TextBlock Name='textBlock' Text='{i18n:I18n Key={x:Static sample:EmbeddedXmlLangKeys.a}}' />";
+
+            var xaml = TestHelper.AxamlFormat.Replace(TestHelper.TestAxamlPlaceholder, testAxaml);
+
+            var userControl = (UserControl)AvaloniaRuntimeXamlLoader.Load(xaml);
+            var textBlock = userControl.FindControl<TextBlock>("textBlock");
+
+            Assert.NotNull(textBlock);
+            I18nProvider.SetCulture(TestHelper.zh);
+            Assert.True(string.Equals("甲", textBlock.Text));
+
+            I18nProvider.SetCulture(TestHelper.en);
+
+            Assert.True(string.Equals("a", textBlock.Text));
+
+            I18nProvider.SetCulture(TestHelper.fr);
+
+            Assert.True(string.Equals("a", textBlock.Text));
+        });
+    } 
+    
+    [Fact]
+    public void LocalXmlKey()
+    {
+        TestHelper.Excute(() =>
+        {
+            const string testAxaml = @"<TextBlock Name='textBlock' Text='{i18n:I18n Key={x:Static sample:LocalXmlLangKeys.a}}' />";
+
+            var xaml = TestHelper.AxamlFormat.Replace(TestHelper.TestAxamlPlaceholder, testAxaml);
+
+            var userControl = (UserControl)AvaloniaRuntimeXamlLoader.Load(xaml);
+            var textBlock = userControl.FindControl<TextBlock>("textBlock");
+
+            Assert.NotNull(textBlock);
+            I18nProvider.SetCulture(TestHelper.zh);
+            Assert.True(string.Equals("甲", textBlock.Text));
+
+            I18nProvider.SetCulture(TestHelper.en);
+
+            Assert.True(string.Equals("a", textBlock.Text));
+
+            I18nProvider.SetCulture(TestHelper.fr);
+
+            Assert.True(string.Equals("a", textBlock.Text));
         });
     }
 }

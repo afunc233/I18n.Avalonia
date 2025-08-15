@@ -39,22 +39,28 @@
     <EmbeddedResource Update="Properties\Resources.zh.resx">
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
-    <None Remove="EmbeddedResourceXml\lang.xml" />
-    <AdditionalFiles Include="EmbeddedResourceXml\lang.xml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </AdditionalFiles>
-    <None Remove="EmbeddedResourceXml\lang.fr.xml" />
-    <AdditionalFiles Include="EmbeddedResourceXml\lang.fr.xml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </AdditionalFiles>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Xml\lang.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Xml\lang_fr.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Xml\lang.fr.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Remove="EmbeddedResourceXml2\lang2_fr.xml" />
+    <None Remove="EmbeddedResourceXml\lang.xml" />
+    <None Remove="EmbeddedResourceXml\lang_en.xml" />
+    <None Remove="EmbeddedResourceXml\lang_fr.xml" />
+    <EmbeddedResource Include="EmbeddedResourceXml\lang.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+
+    <None Remove="EmbeddedResourceXml\lang.fr.xml" />
+    <None Remove="EmbeddedResourceXml2\lang2.xml" />
+    <None Remove="EmbeddedResourceXml2\lang2.fr.xml" />
+    <EmbeddedResource Include="EmbeddedResourceXml\lang_en.xml" />
+    <EmbeddedResource Include="EmbeddedResourceXml\lang_fr.xml" />
+    <None Remove="Xml\lang.fr.xml" />
+    <None Include="Xml\lang_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Xml\lang.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
