@@ -39,6 +39,15 @@
     <EmbeddedResource Update="Properties\Resources.zh.resx">
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
+    <None Include="Json\lang.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Json\lang_en.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Json\lang_fr.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Xml\lang_fr.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -60,6 +69,12 @@
     <None Update="Xml\lang.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Remove="EmbeddedResourceJson\lang.json"/>
+    <EmbeddedResource Include="EmbeddedResourceJson\lang.json"/>
+    <None Remove="EmbeddedResourceJson\lang_en.json"/>
+    <EmbeddedResource Include="EmbeddedResourceJson\lang_en.json"/>
+    <None Remove="EmbeddedResourceJson\lang_fr.json"/>
+    <EmbeddedResource Include="EmbeddedResourceJson\lang_fr.json"/>
   </ItemGroup>
 
 </Project>

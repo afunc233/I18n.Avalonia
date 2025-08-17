@@ -7,7 +7,7 @@ namespace I18n.Avalonia.TranslatorProviders;
 
 public static class Extensions
 {
-    public static string GetStringOrDefault(this IXmlTranslatorProvider provider, string key)
+    public static string GetStringOrDefault(this IFileTranslatorProvider provider, string key)
     {
         var culture = provider.Culture;
 
@@ -26,6 +26,11 @@ public static class Extensions
         {
             return provider.DefaultCultureValue.TryGetValue(k, out var defaultValue) ? defaultValue : k;
         }
+    }
+
+    public static void Refresh(this ITranslatorProvider provider)
+    {
+        foreach (var i18nUnit in provider.I18nUnits) i18nUnit.Refresh();
     }
 
     internal static void ParseXml2Dic(this XmlNode rootNode, Dictionary<string, string> cultureValue)

@@ -16,16 +16,6 @@ internal class ResxI18nGenerator : AbsAttributeDetectGenerator
         get => Attribute;
     }
 
-    public override void Initialize(IncrementalGeneratorInitializationContext context)
-    {
-        base.Initialize(context);
-
-        context.RegisterPostInitializationOutput(ctx =>
-        {
-            ctx.AddSource($"{Const.ResxI18nOfAttribute}.g.cs", ResxKeysOfAttributeSource);
-        });
-    }
-
     protected override void GenerateCode(SourceProductionContext context,
         AttributeContextAndArgumentSyntax contextAndArguments)
     {
@@ -137,24 +127,13 @@ internal class ResxI18nGenerator : AbsAttributeDetectGenerator
         "Culture"
     ];
 
-
-    private static readonly string ResxKeysOfAttributeSource =
-        $"""
-         using System;
-
-         namespace {Const.AttributeNamespace};
-         #pragma warning disable CS9113
-         [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-         public class {Const.ResxI18nOfAttribute}(Type resourceType) : Attribute;
-         #pragma warning restore CS9113
-         """;
-
     private static readonly string Format =
         """
         using System;
         using System.Collections.Generic;
         using System.Globalization;
         using I18n.Avalonia;
+        using I18n.Avalonia.TranslatorProviders;
 
         namespace $NameSpace$;
 
@@ -201,10 +180,7 @@ internal class ResxI18nGenerator : AbsAttributeDetectGenerator
 
         $I18nAddOrUpdate$
 
-                foreach (var i18nUnit in _translator.I18nUnits)
-                {
-                    i18nUnit.Refresh();
-                }
+                _translator.Refresh();
             }
         $I18nUnit$
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using I18n.Avalonia.TranslatorProviders;
 
 namespace I18n.Avalonia;
 
@@ -28,7 +29,7 @@ public static class I18nProvider
         foreach (var translatorProvider in TranslatorProviders)
         {
             translatorProvider.SetCulture(culture);
-            foreach (var i18nUnit in translatorProvider.I18nUnits) i18nUnit.Refresh();
+            translatorProvider.Refresh();
         }
 
         OnCultureChanged?.Invoke(null, Culture);

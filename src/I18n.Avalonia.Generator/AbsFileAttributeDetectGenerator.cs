@@ -4,31 +4,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace I18n.Avalonia.Generator;
 
-[Generator(LanguageNames.CSharp)]
-internal class XmlI18nGenerator : AbsAttributeDetectGenerator
+internal abstract class AbsFileAttributeDetectGenerator : AbsAttributeDetectGenerator
 {
-    private static readonly string XmlKeysOfAttributeSource =
-        $"""
-         using System;
-         using System.Collections.Generic;
-         using System.Diagnostics.CodeAnalysis;
-         using System.Xml;
-
-         namespace {Const.AttributeNamespace};
-         #pragma warning disable CS9113
-
-         [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-         public sealed class {Const.XmlI18nAttribute} : Attribute;
-
-         [AttributeUsage(AttributeTargets.Field, Inherited = false)]
-         public sealed class {Const.XmlI18nKeysAttribute} : Attribute;
-
-         [AttributeUsage(AttributeTargets.Field, Inherited = false)]
-         public sealed class {Const.XmlI18nProviderAttribute} : Attribute;
-
-         #pragma warning restore CS9113
-         """;
-
     private static readonly string Format =
         """
         using System;
@@ -38,6 +15,7 @@ internal class XmlI18nGenerator : AbsAttributeDetectGenerator
         using System.Linq;
         using System.Xml;
         using I18n.Avalonia;
+        using I18n.Avalonia.TranslatorProviders;
 
         namespace $NameSpace$;
 
@@ -49,10 +27,9 @@ internal class XmlI18nGenerator : AbsAttributeDetectGenerator
 
                 I18n.Avalonia.I18nProvider.Add($TranslatorProviderName$);
                 
-                foreach (var i18nUnit in $TranslatorProviderName$.I18nUnits)
-                {
-                    i18nUnit.Refresh();
-                }
+                $TranslatorProviderName$.FillValues();
+                
+                $TranslatorProviderName$.Refresh();
             }
 
         $I18nUnit$
@@ -60,31 +37,6 @@ internal class XmlI18nGenerator : AbsAttributeDetectGenerator
 
         """;
 
-    public override string AttributeName
-    {
-        get => Const.XmlKeysOfAttributeFullName;
-    }
-
-    public override void Initialize(IncrementalGeneratorInitializationContext context)
-    {
-        base.Initialize(context);
-
-        context.RegisterPostInitializationOutput(ctx =>
-        {
-            ctx.AddSource($"{Const.XmlI18nAttribute}.g.cs", XmlKeysOfAttributeSource);
-        });
-    }
-
-
-    private DiagnosticDescriptor DiagnosticDescriptorick(string id,
-        string title,
-        string messageFormat,
-        string category,
-        DiagnosticSeverity defaultSeverity,
-        bool isEnabledByDefault)
-    {
-        return new DiagnosticDescriptor(id, title, messageFormat, category, defaultSeverity, isEnabledByDefault);
-    }
 
     protected override void GenerateCode(SourceProductionContext context,
         AttributeContextAndArgumentSyntax attributeContextAndArgumentSyntax)
@@ -107,8 +59,8 @@ internal class XmlI18nGenerator : AbsAttributeDetectGenerator
         var keyMember = classDeclaration.Members.FirstOrDefault(it =>
         {
             return it.AttributeLists.SelectMany(attr => attr.Attributes).Any(attr =>
-                string.Equals(attr.Name.ToFullString(), Const.XmlI18nKeysAttribute) ||
-                string.Equals(attr.Name.ToFullString(), Const.XmlI18nKeysAttribute.Replace("Attribute", "")));
+                string.Equals(attr.Name.ToFullString(), Const.I18nKeysAttribute) ||
+                string.Equals(attr.Name.ToFullString(), Const.I18nKeysAttribute.Replace("Attribute", "")));
         });
 
         if (keyMember is not FieldDeclarationSyntax keysDeclarationSyntax)
@@ -197,10 +149,10 @@ internal class XmlI18nGenerator : AbsAttributeDetectGenerator
         {
             return it.AttributeLists.SelectMany(attr => attr.Attributes).Any(attr =>
                 {
-                    if (string.Equals(attr.Name.ToFullString(), Const.XmlI18nProviderAttribute)) return true;
+                    if (string.Equals(attr.Name.ToFullString(), Const.I18nProviderAttribute)) return true;
 
                     return string.Equals(attr.Name.ToFullString(),
-                        Const.XmlI18nProviderAttribute.Replace("Attribute", ""));
+                        Const.I18nProviderAttribute.Replace("Attribute", ""));
                 }
             );
         });
@@ -246,7 +198,7 @@ internal class XmlI18nGenerator : AbsAttributeDetectGenerator
             return;
         }
 
-        if (!string.Equals(identifierNameSyntax.Identifier.Text, Const.ITranslatorProvider))
+        if (!string.Equals(identifierNameSyntax.Identifier.Text, Const.IFileTranslatorProvider))
         {
             context.ReportDiagnostic(
                 Diagnostic.Create(
@@ -255,7 +207,7 @@ internal class XmlI18nGenerator : AbsAttributeDetectGenerator
                         DiagnosticSeverity.Error,
                         true),
                     identifierNameSyntax.Identifier.GetLocation(),
-                    $"translatorProvider must be {Const.ITranslatorProvider}"));
+                    $"translatorProvider must be {Const.IFileTranslatorProvider}"));
 
             return;
         }

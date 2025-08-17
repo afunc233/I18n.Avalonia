@@ -1,11 +1,11 @@
 using System.IO;
 using System.Xml;
 
-namespace I18n.Avalonia.TranslatorProviders;
+namespace I18n.Avalonia.TranslatorProviders.Xml;
 
-public class DefaultLocalXmlI18nProvider : DefaultXmlI18nProvider
+public class DefaultLocalXmlI18nProvider(string filePath) : AbsXmlI18nProvider
 {
-    public DefaultLocalXmlI18nProvider(string filePath)
+    public override void FillValues()
     {
         if (!Directory.Exists(filePath)) throw new DirectoryNotFoundException(filePath);
 

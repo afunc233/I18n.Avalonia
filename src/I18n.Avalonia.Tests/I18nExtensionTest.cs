@@ -207,6 +207,34 @@ public class I18nExtensionTest
     }
 
     [Test]
+    public void EmbeddedJsonKey()
+    {
+        TestHelper.Excute(() =>
+        {
+            const string testAxaml =
+                @"<TextBlock Name='textBlock' Text='{i18n:I18n Key={x:Static sample:EmbeddedJsonLangKeys.a}}' />";
+
+            var xaml = TestHelper.AxamlFormat.Replace(TestHelper.TestAxamlPlaceholder, testAxaml);
+
+            var userControl = (UserControl)AvaloniaRuntimeXamlLoader.Load(xaml);
+            var textBlock = userControl.FindControl<TextBlock>("textBlock");
+
+            Assert.That(textBlock, Is.Not.Null);
+
+            I18nProvider.SetCulture(TestHelper.zh);
+            Assert.That(string.Equals("甲", textBlock.Text));
+
+            I18nProvider.SetCulture(TestHelper.en);
+
+            Assert.That(string.Equals("a", textBlock.Text));
+
+            I18nProvider.SetCulture(TestHelper.fr);
+
+            Assert.That(string.Equals("a", textBlock.Text));
+        });
+    }
+
+    [Test]
     public void LocalXmlKey()
     {
         TestHelper.Excute(() =>

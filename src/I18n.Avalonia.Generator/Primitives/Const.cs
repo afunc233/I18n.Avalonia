@@ -22,33 +22,33 @@ internal static class Const
         get => $"{AttributeNamespace}.{nameof(ResxI18nOfAttribute)}";
     }
 
-    internal static string XmlI18nAttribute
+    internal static string FileBasedI18nAttribute
     {
-        get => nameof(XmlI18nAttribute);
+        get => nameof(FileBasedI18nAttribute);
     }
 
-    internal static string XmlI18nKeysAttribute
+    internal static string I18nKeysAttribute
     {
-        get => nameof(XmlI18nKeysAttribute);
+        get => nameof(I18nKeysAttribute);
     }
 
-    internal static string XmlI18nProviderAttribute
+    internal static string I18nProviderAttribute
     {
-        get => nameof(XmlI18nProviderAttribute);
+        get => nameof(I18nProviderAttribute);
     }
 
-    internal static string XmlKeysOfAttributeFullName
+    internal static string FileKeysAttributeFullName
     {
-        get => $"{AttributeNamespace}.{nameof(XmlI18nAttribute)}";
-    }
-
-    internal static string EmbeddedResourceXmlI18nOfAttribute
-    {
-        get => nameof(EmbeddedResourceXmlI18nOfAttribute);
+        get => $"{AttributeNamespace}.{nameof(FileBasedI18nAttribute)}";
     }
 
     internal static string ITranslatorProvider
     {
         get => nameof(ITranslatorProvider);
+    }
+
+    internal static string IFileTranslatorProvider
+    {
+        get => nameof(IFileTranslatorProvider);
     }
 }
