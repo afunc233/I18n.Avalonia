@@ -5,9 +5,15 @@ using I18n.Avalonia.TranslatorProviders;
 
 namespace I18n.Avalonia;
 
+public class CultureChangedEventArgs(CultureInfo culture, IList<ITranslatorProvider> translatorProviders) : EventArgs
+{
+    public CultureInfo Culture { get; } = culture;
+
+    public IList<ITranslatorProvider> TranslatorProviders { get; } = translatorProviders;
+}
 public static class I18nProvider
 {
-    public static readonly IList<ITranslatorProvider> TranslatorProviders = [];
+    private static readonly IList<ITranslatorProvider> TranslatorProviders = [];
 
     static I18nProvider()
     {
@@ -15,23 +21,29 @@ public static class I18nProvider
     }
 
     public static CultureInfo Culture { get; private set; }
-    public static event EventHandler<CultureInfo>? OnCultureChanged;
+    public static event EventHandler<CultureChangedEventArgs>? OnCultureChanged;
 
     public static void Add(ITranslatorProvider provider)
     {
-        provider.SetCulture(Culture);
-        TranslatorProviders.Add(provider);
+        lock (TranslatorProviders)
+        {
+            provider.SetCulture(Culture);
+            TranslatorProviders.Add(provider);
+        }
     }
 
     public static void SetCulture(CultureInfo culture)
     {
-        Culture = culture;
-        foreach (var translatorProvider in TranslatorProviders)
+        lock (TranslatorProviders)
         {
-            translatorProvider.SetCulture(culture);
-            translatorProvider.Refresh();
-        }
+            Culture = culture;
+            foreach (var translatorProvider in TranslatorProviders)
+            {
+                translatorProvider.SetCulture(culture);
+                translatorProvider.Refresh();
+            }
 
-        OnCultureChanged?.Invoke(null, Culture);
+            OnCultureChanged?.Invoke(null, new CultureChangedEventArgs(culture, TranslatorProviders));
+        }
     }
 }

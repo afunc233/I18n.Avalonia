@@ -26,9 +26,9 @@ public class I18nProviderTest
         TestHelper.Excute(() =>
         {
             var ci = new CultureInfo("ar");
-            EventHandler<CultureInfo> handler = (sender, info) =>
+            EventHandler<CultureChangedEventArgs> handler = (sender, info) =>
             {
-                Assert.That(info, Is.EqualTo(ci));
+                Assert.That(info.Culture, Is.EqualTo(ci));
             };
             I18nProvider.OnCultureChanged += handler;
             I18nProvider.SetCulture(ci);
@@ -43,12 +43,12 @@ public class I18nProviderTest
         {
             var ci = new CultureInfo("fr");
 
-            var o = Observable.FromEventPattern<CultureInfo>(
+            var o = Observable.FromEventPattern<CultureChangedEventArgs>(
                 add => I18nProvider.OnCultureChanged += add,
                 rm => I18nProvider.OnCultureChanged -= rm
             ).Select(it => it.EventArgs).Subscribe(culture =>
             {
-                Assert.That(ci, Is.EqualTo(culture));
+                Assert.That(ci, Is.EqualTo(culture.Culture));
             });
 
             I18nProvider.SetCulture(ci);
